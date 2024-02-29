@@ -10,6 +10,7 @@ output:
 
 \renewcommand{\abstractname}{Résumé}
  \begin{abstract}
+ Coucou Nathan d'amour
  \end{abstract}
 
 \newpage  
