@@ -38,7 +38,7 @@ Cette étude analyse la validité empirique de la courbe de Philipps au sein du 
 
 # Introduction
 
-Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU)
+Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU).
 
 # Présentation des données et statistiques descriptives
 
