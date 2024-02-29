@@ -20,6 +20,7 @@ library(lmtest)
 library(dynlm)
 library(astsa)
 library(AER)
+library(readxl)
 ```
 
 \renewcommand{\abstractname}{Résumé}
