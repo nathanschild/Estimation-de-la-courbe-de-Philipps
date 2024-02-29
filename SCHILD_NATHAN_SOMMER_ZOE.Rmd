@@ -21,7 +21,7 @@ output:
 
 # Introduction
 
-Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation....
+Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose
 
 # Présentation des données et statistiques descriptives
 
