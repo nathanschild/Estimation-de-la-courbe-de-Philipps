@@ -50,7 +50,7 @@ Philipps en 1958 introduit une relation entre le taux de croissance des salaires
 Il convient dans un premier temps de charger la base de données.
 
 ```{r}
-data <- readxl::read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
+data <- read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
 data
 ```
 
