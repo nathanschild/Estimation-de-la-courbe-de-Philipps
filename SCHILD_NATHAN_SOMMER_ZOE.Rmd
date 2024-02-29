@@ -42,26 +42,43 @@ Philipps en 1958 introduit une relation entre le taux de croissance des salaires
 
 # Présentation des données et statistiques descriptives
 
-
+Cette section a pour but de décrire la méthodologie utilisée dans cette étude, les sources des données ainsi que de procéder à des statistiques descriptives. Cela nous permettra d'avoir un premier contact avec les données utilisées dans l'étude afin de mieux interpréter les résultats des estimations.
 
 ## Présentation des données
 
 
-Il convient dans un premier temps de charger la base de données.
+Il convient dans un premier temps de charger la base de données et d'en montrer les premières lignes.
 
 ```{r}
 data <- read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
-data
+head(data)
 ```
+\vspace{2mm}
 
+Nous considérons donc deux variables principales dans le cadre de notre étude, le chômage qui sera la variable dépendante et l'inflation qui représentera la variable indépendante.
 
-## Statistiques Descriptives
+\vspace{2mm}
 
-Il convient dans un premier temps de séparer les données françaises et anglaises :
+Tout d'abord, notre base de données contient 160 observations par pays. Ce sont des observations trimestrielles allant du premier trimestre de 1983 jusqu'au dernier trimestre de 2022. Les données proviennent de la base de données de l'OCDE dont voici une brève description. Ainsi, $T=160$ et il n'y aucune valeur manquante. 
+\begin{itemize}
+\item L'inflation est mesurée par son taux de croissance annuel, les données sont accessibles  \href{https://data.oecd.org/fr/price/inflation-ipc.htm}{ici}.
+\item Le taux de chômage est mesurée comme étant le rapport entre le nombre de chômeurs et la population active. Notons $U$ le nombre de chômeurs étant défini comme étant les individus en âge de travailler sans travail, disponibles sur le marché du travail et qui ont accompli des démarches spécifiques pour trouver du travail. Enfin, en notant $E$, le nombre de travailleurs, le taux de chômage est calculé comme ceci $\frac{U}{U+E}$. Les données sont disponibles \href{https://data.oecd.org/fr/unemp/taux-de-chomage.htm}{ici}.
+\end{itemize}
+
+\vspace{2mm}
+
+Il convient de noter que par la suite, nous séparerons les deux pays afin d'améliorer la lisibilité de l'étude.
 ```{r}
 dataFR <- data %>% filter(country=="FRA")
 dataUK <- data %>% filter(country=="UK")
 ```
+
+## Statistiques Descriptives
+
+Avant de passer aux résultats des estimations, il convient de considérer des statistiques descriptives concernant les variables d'intérêt. Comme énoncé précédemment, il n'y a pas de valeurs manquantes et il y a 160 observations.
+
+\vspace{2mm}
+
 On peut donc par la suite éditer un tableau de statistiques descriptives pour la France et le Royaume-Uni.
 ```{r}
 statsFR <- dataFR %>% select(unemp,inf)
