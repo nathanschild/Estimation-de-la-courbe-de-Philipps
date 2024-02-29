@@ -73,7 +73,17 @@ statsUK <- dataUK %>% select(unemp,inf)
 basicStats(statsUK)
 
 ```
+\vspace{2mm}
 
+Nous observons premièrement que pour la France, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela signifie que les distributions ont une asymétrie à droite, nous pouvons alors en déduire que la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage français moyen est de l'ordre de $9.75$ tandis que sa médiane est de l'ordre de $9.57$. Au niveau de l'inflation, la moyenne est de l'ordre de $2.24$ et sa médiane est de $1.81$. 
+
+\vspace{2mm}
+
+Deuxièmement, pour le Royaume-Uni, les observations sont similaires. En effet, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela est similaire au cas français où la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage anglais moyen est de l'ordre de $6.97$ tandis que sa médiane est de l'ordre de $6.6$. Au niveau de l'inflation, la moyenne est de l'ordre de $3.02$ et sa médiane est de $2.4$. 
+
+\vspace{2mm}
+
+Par ailleurs, une constatation supplémentaire peut être réalisée. En effet, le taux de chômage français moyen est supérieur à celui du Royaume-Uni. De plus, l'inflation moyenne est supérieure au Royaume-Uni qu'en France. Ainsi, juste en regardant les observations moyennes, on pourrait énoncer le fait qu'une inflation plus élevée se traduirait par un chômage plus faible.
 
 # Approche économétrique
 
