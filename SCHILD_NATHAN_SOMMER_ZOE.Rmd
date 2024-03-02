@@ -21,6 +21,7 @@ library(dynlm)
 library(astsa)
 library(AER)
 library(readxl)
+library(ggplot2)
 ```
 
 \renewcommand{\abstractname}{Résumé}
@@ -73,6 +74,27 @@ dataFR <- data %>% filter(country=="FRA")
 dataUK <- data %>% filter(country=="UK")
 ```
 
+
+```{r,echo=FALSE,warning=FALSE}
+dataFR$time <- as.Date(paste0("01-", 
+                              gsub("Q([0-9]+)-([0-9]+)", "\\1-\\2", 
+                                   dataFR$time)), 
+                       format = "%d-%m-%Y")
+dataUK$time <- as.Date(paste0("01-", 
+                              gsub("Q([0-9]+)-([0-9]+)", 
+                                   "\\1-\\2", 
+                                   dataUK$time)), 
+                       format = "%d-%m-%Y")
+
+dataFR_ts <- ts(dataFR[, c("unemp", "inf")], start = start(dataFR$time), frequency = 4)
+dataUK_ts <- ts(dataUK[, c("unemp", "inf")], start = start(dataUK$time), frequency = 4)
+
+
+```
+
+
+
+
 ## Statistiques Descriptives
 
 Avant de passer aux résultats des estimations, il convient de considérer des statistiques descriptives concernant les variables d'intérêt. Comme énoncé précédemment, il n'y a pas de valeurs manquantes et il y a 160 observations.
@@ -101,6 +123,33 @@ Deuxièmement, pour le Royaume-Uni, les observations sont similaires. En effet, 
 \vspace{2mm}
 
 Par ailleurs, une constatation supplémentaire peut être réalisée. En effet, le taux de chômage français moyen est supérieur à celui du Royaume-Uni. De plus, l'inflation moyenne est supérieure au Royaume-Uni qu'en France. Ainsi, juste en regardant les observations moyennes, on pourrait énoncer le fait qu'une inflation plus élevée se traduirait par un chômage plus faible.
+
+\vspace{2mm}
+
+On peut par ailleurs, considérer des graphiques afin d'analyser la relation entre l'inflation et le chômage pour les deux pays.
+
+```{r,error=FALSE}
+ggplot(dataFR, aes(x = unemp, y = inf)) +
+  geom_point(size = 3, color = "steelblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage en France") +
+  theme_minimal() 
+
+ggplot(dataUK, aes(x = unemp, y = inf)) +
+  geom_point(size = 3, color = "steelblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage au Royaume-Uni") +
+  theme_minimal() 
+
+```
+\vspace{2mm}
+
+Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir même si une tendance négative semble se dégager.
+
 
 # Approche économétrique
 
