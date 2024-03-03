@@ -153,18 +153,45 @@ Graphiquement, il est difficile de constater une telle relation pour les deux pa
 
 # Approche économétrique
 
-Contenu des modèles ici.
+Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer.
 
 ## Les modèles estimés
 
-Contenu des estimations ici.
+Cette sous-section vise à établir théoriquement l'équation de la courbe de Philipps. 
+Formellement, la courbe de Philipps augmentée des anticipations peut s'écrire de la manière suivante :
+
+\[
+\pi_t = \alpha + \beta u_t + \gamma \pi^{e}_{t} + \epsilon_t
+\]
+
+Où $\pi_t$ représente l'inflation à la date $t$, $u_t$ le taux de chômage à la date $t$ et $\pi^{e}_{t}$ les anticipations d'inflation.
+
+Nous considérerons un schéma d'anticipations adaptatives pouvant se formaliser de la manière suivante :
+
+\[
+\pi^{e}_{t} - \pi^{e}_{t-1} = \lambda(\pi_t - \pi^{e}_{t-1})
+\]
+
+\vspace{2mm}
+
+Deux cas particuliers sont intéressants à noter ici. Tout d'abord, il convient de noter que $\lambda$ est un coefficient d'anticipation. Si $\lambda=1$, les anticipations d'inflation sont naïves \footnote{En effet, si $\lambda=1$, $\pi^{e}_{t}=\pi_t$}. Si $\lambda=0$, les anticipations d'inflation sont statiques \footnote{En effet, si $\lambda=0$, $\pi^{e}_{t} = \pi^{e}_{t-1}$}.
+
+\vspace{2mm}
+
+Il convient également de noter que le modèle d'anticipations adaptatives fait partie des modèles ayant une structure de Koyck \footnote{La structure de retard de Koyck est caractérisé par le fait que les effets décroissent avec le temps.}. Formellement, un modèle présentant une structure de retard de Koyck peut s'écrire de la manière suivante :
+
+\[
+y_t= \alpha^{*} + \theta y_{t-1} + \beta^{*} x_t + \epsilon_t^{*}
+\]
+
+Nous allons désormais montrer qu'il est possible d'écrire l'équation de la courbe de Philipps comme l'équation ci-dessus. Cette équation représentera le point d'ancrage de notre étude et nous servira fortement par la suite.
 
 ## Résultats des estimations
 
 Contenu des interprétations ici.
 
 ### Interprétation
-### Discussion
+### Tests statistiques
 
 # Conclusion
 
