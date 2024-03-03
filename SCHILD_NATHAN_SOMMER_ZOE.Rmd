@@ -165,7 +165,6 @@ Formellement, la courbe de Philipps augmentée des anticipations peut s'écrire 
 \]
 
 Où $\pi_t$ représente l'inflation à la date $t$, $u_t$ le taux de chômage à la date $t$ et $\pi^{e}_{t}$ les anticipations d'inflation.
-
 Nous considérerons un schéma d'anticipations adaptatives pouvant se formaliser de la manière suivante :
 
 \[
