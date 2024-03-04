@@ -153,9 +153,9 @@ Graphiquement, il est difficile de constater une telle relation pour les deux pa
 
 # Approche économétrique
 
-Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer.
+Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer. Par la suite,
 
-## Les modèles estimés
+## Le modèle théorique
 
 Cette sous-section vise à établir théoriquement l'équation de la courbe de Philipps. 
 Formellement, la courbe de Philipps augmentée des anticipations peut s'écrire de la manière suivante :
@@ -184,10 +184,86 @@ y_t= \alpha^{*} + \theta y_{t-1} + \beta^{*} x_t + \epsilon_t^{*}
 \]
 
 Nous allons désormais montrer qu'il est possible d'écrire l'équation de la courbe de Philipps comme l'équation ci-dessus. Cette équation représentera le point d'ancrage de notre étude et nous servira fortement par la suite.
+Nous avons donc les deux équations suivantes :
+\[
+  \begin{cases}
+     \pi_t = \alpha + \beta u_t + \gamma \pi^{e}_{t} + \epsilon_t\\
+    \pi^{e}_{t} - \pi^{e}_{t-1} = \lambda(\pi_t - \pi^{e}_{t-1})
+  \end{cases}
+\]
+
+On peut réecrire aisément la deuxième ligne à l'aide de l'opérateur retard \footnote{En effet, $L^{i}y_t=y_{t-i}$} :
+
+\[
+\pi^{e}_{t} - L\pi^{e}_{t} - \lambda L \pi^{e}_{t}= \lambda\pi_{t}
+\]
+
+En factorisant :
+
+\[
+\pi^{e}_{t}[1-L(1-\lambda)] = \lambda\pi_{t}
+\]
+
+Finalement, en notant $\theta=1-\lambda$, on trouve que : 
+
+\[
+\pi^{e}_{t}=\frac{(1-\theta)\pi_t}{1-\theta L}
+\]
+
+En réinjectant cette équation dans l'équation de la courbe de Philipps, il est aisé de constater que :
+
+\[
+\pi_t = \alpha + \beta u_t + \gamma [\frac{(1-\theta)\pi_t}{1-\theta L}] + \epsilon_t
+\]
+
+En arrangeant \footnote{Il suffit de multiplier le tout par $1-\theta L$} :
+
+\[
+\pi_t = \alpha^{*} + \theta \pi_{t-1} + \beta u_t + \delta u_{t-1} + \epsilon_t ^{*}
+\]
+
+avec $\alpha^{*}=\alpha(1-\theta)$ , $\epsilon_t ^{*}= \epsilon_t(1-\theta L)= \epsilon_t -\theta \epsilon_{t-1}$.
+
+Voici l'équation économétrique fondamentale que nous allons estimer dans ce travail. Nous constatons que l'inflation dépend de sa propre valeur retardée d'une période ($AR(1)$), du chômage et du chômage retardé d'une période. De plus, le terme d'erreur suit un processus de moyenne mobile d'ordre 1 ($MA(1)$)
+
+Par ailleurs, le coefficient $\theta$ est très important dans notre contexte. Si $\theta=1$, l'ajustement est très lent et les anticipations pourront être considérées comme étant statiques. Dans l'autre cas où $\theta=0$, le processus d'ajustement sera très rapide et les anticipations pourront être considérées comme naïves. 
+
+Par la suite, après avoir estimé les deux modèles, respectivement pour la France et pour le Royaume-Uni, nous mènerons des tests afin de savoir si les séries sont stationnaires ou non. Nous utiliserons plus particulièrement la méthode de Engle-Granger en deux étapes qui consiste à tout d'abord faire des tests de stationnarité puis un test de cointégration. Ensuite, si les variables sont cointégrées, il faudra adopter un modèle à correction d'erreurs qui combine le court-terme et le long-terme. En effet, si les deux variables ne sont pas cointégrées et qu'une régression simple présente un $R^{2}$ proche de 1 et une $DW$ proche de 0, la régression pourra être considérée comme falacieuse.
+
 
 ## Résultats des estimations
 
-Contenu des interprétations ici.
+```{r}
+MCOfr <- lm(inf~unemp,data=dataFR)
+modelfr <- dynlm(inf~L(inf,1)+unemp+L(unemp,1),data=dataFR_ts)
+rob_seFR <- list(sqrt(diag(vcovHC(MCOfr, type = "HC1"))),
+                 sqrt(diag(vcovHC(modelfr, type = "HC1"))))
+
+stargazer(list(MCOfr, modelfr),
+          title = "Table 2 : Résultat des estimations pour la France",
+          align = T, 
+          type = "text",
+          no.space = F,se=rob_seFR)
+
+```
+
+
+Commentaires :
+
+```{r}
+MCOuk <- lm(inf~unemp,data=dataUK)
+modeluk <- dynlm(inf~L(inf,1)+unemp+L(unemp,1),data=dataUK_ts)
+rob_seUK <- list(sqrt(diag(vcovHC(MCOuk, type = "HC1"))),
+                 sqrt(diag(vcovHC(modeluk, type = "HC1"))))
+
+stargazer(list(MCOuk, modeluk),
+          title = "Table 3 : Résultat des estimations pour le Royaume-Uni",
+          align = T, 
+          type = "text",
+          no.space = F,se=rob_seUK)
+```
+
+Commentaires : 
 
 ### Interprétation
 ### Tests statistiques
