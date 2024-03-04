@@ -20,6 +20,8 @@ library(lmtest)
 library(dynlm)
 library(astsa)
 library(AER)
+library(readxl)
+library(ggplot2)
 ```
 
 \renewcommand{\abstractname}{Résumé}
@@ -37,30 +39,68 @@ Cette étude analyse la validité empirique de la courbe de Philipps au sein du 
 
 # Introduction
 
-Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU)
+Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU).
 
 # Présentation des données et statistiques descriptives
 
-
+Cette section a pour but de décrire la méthodologie utilisée dans cette étude, les sources des données ainsi que de procéder à des statistiques descriptives. Cela nous permettra d'avoir un premier contact avec les données utilisées dans l'étude afin de mieux interpréter les résultats des estimations.
 
 ## Présentation des données
 
 
-Il convient dans un premier temps de charger la base de données.
+Il convient dans un premier temps de charger la base de données et d'en montrer les premières lignes.
 
 ```{r}
-data <- readxl::read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
-data
+data <- read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
+head(data)
 ```
+\vspace{2mm}
 
+Nous considérons donc deux variables principales dans le cadre de notre étude, le chômage qui sera la variable dépendante et l'inflation qui représentera la variable indépendante.
 
-## Statistiques Descriptives
+\vspace{2mm}
 
-Il convient dans un premier temps de séparer les données françaises et anglaises :
+Tout d'abord, notre base de données contient 160 observations par pays. Ce sont des observations trimestrielles allant du premier trimestre de 1983 jusqu'au dernier trimestre de 2022. Les données proviennent de la base de données de l'OCDE dont voici une brève description. Ainsi, $T=160$ et il n'y aucune valeur manquante. 
+\begin{itemize}
+\item L'inflation est mesurée par son taux de croissance annuel, les données sont accessibles  \href{https://data.oecd.org/fr/price/inflation-ipc.htm}{ici}.
+\item Le taux de chômage est mesurée comme étant le rapport entre le nombre de chômeurs et la population active. Notons $U$ le nombre de chômeurs étant défini comme étant les individus en âge de travailler sans travail, disponibles sur le marché du travail et qui ont accompli des démarches spécifiques pour trouver du travail. Enfin, en notant $E$, le nombre de travailleurs, le taux de chômage est calculé comme ceci $\frac{U}{U+E}$. Les données sont disponibles \href{https://data.oecd.org/fr/unemp/taux-de-chomage.htm}{ici}.
+\end{itemize}
+
+\vspace{2mm}
+
+Il convient de noter que par la suite, nous séparerons les deux pays afin d'améliorer la lisibilité de l'étude.
 ```{r}
 dataFR <- data %>% filter(country=="FRA")
 dataUK <- data %>% filter(country=="UK")
 ```
+
+
+```{r,echo=FALSE,warning=FALSE}
+dataFR$time <- as.Date(paste0("01-", 
+                              gsub("Q([0-9]+)-([0-9]+)", "\\1-\\2", 
+                                   dataFR$time)), 
+                       format = "%d-%m-%Y")
+dataUK$time <- as.Date(paste0("01-", 
+                              gsub("Q([0-9]+)-([0-9]+)", 
+                                   "\\1-\\2", 
+                                   dataUK$time)), 
+                       format = "%d-%m-%Y")
+
+dataFR_ts <- ts(dataFR[, c("unemp", "inf")], start = start(dataFR$time), frequency = 4)
+dataUK_ts <- ts(dataUK[, c("unemp", "inf")], start = start(dataUK$time), frequency = 4)
+
+
+```
+
+
+
+
+## Statistiques Descriptives
+
+Avant de passer aux résultats des estimations, il convient de considérer des statistiques descriptives concernant les variables d'intérêt. Comme énoncé précédemment, il n'y a pas de valeurs manquantes et il y a 160 observations.
+
+\vspace{2mm}
+
 On peut donc par la suite éditer un tableau de statistiques descriptives pour la France et le Royaume-Uni.
 ```{r}
 statsFR <- dataFR %>% select(unemp,inf)
@@ -72,22 +112,85 @@ statsUK <- dataUK %>% select(unemp,inf)
 basicStats(statsUK)
 
 ```
+\vspace{2mm}
+
+Nous observons premièrement que pour la France, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela signifie que les distributions ont une asymétrie à droite, nous pouvons alors en déduire que la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage français moyen est de l'ordre de $9.75$ tandis que sa médiane est de l'ordre de $9.57$. Au niveau de l'inflation, la moyenne est de l'ordre de $2.24$ et sa médiane est de $1.81$. 
+
+\vspace{2mm}
+
+Deuxièmement, pour le Royaume-Uni, les observations sont similaires. En effet, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela est similaire au cas français où la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage anglais moyen est de l'ordre de $6.97$ tandis que sa médiane est de l'ordre de $6.6$. Au niveau de l'inflation, la moyenne est de l'ordre de $3.02$ et sa médiane est de $2.4$. 
+
+\vspace{2mm}
+
+Par ailleurs, une constatation supplémentaire peut être réalisée. En effet, le taux de chômage français moyen est supérieur à celui du Royaume-Uni. De plus, l'inflation moyenne est supérieure au Royaume-Uni qu'en France. Ainsi, juste en regardant les observations moyennes, on pourrait énoncer le fait qu'une inflation plus élevée se traduirait par un chômage plus faible.
+
+\vspace{2mm}
+
+On peut par ailleurs, considérer des graphiques afin d'analyser la relation entre l'inflation et le chômage pour les deux pays.
+
+```{r,error=FALSE}
+ggplot(dataFR, aes(x = unemp, y = inf)) +
+  geom_point(size = 3, color = "steelblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage en France") +
+  theme_minimal() 
+
+ggplot(dataUK, aes(x = unemp, y = inf)) +
+  geom_point(size = 3, color = "steelblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage au Royaume-Uni") +
+  theme_minimal() 
+
+```
+\vspace{2mm}
+
+Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir même si une tendance négative semble se dégager.
 
 
 # Approche économétrique
 
-Contenu des modèles ici.
+Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer.
 
 ## Les modèles estimés
 
-Contenu des estimations ici.
+Cette sous-section vise à établir théoriquement l'équation de la courbe de Philipps. 
+Formellement, la courbe de Philipps augmentée des anticipations peut s'écrire de la manière suivante :
+
+\[
+\pi_t = \alpha + \beta u_t + \gamma \pi^{e}_{t} + \epsilon_t
+\]
+
+Où $\pi_t$ représente l'inflation à la date $t$, $u_t$ le taux de chômage à la date $t$ et $\pi^{e}_{t}$ les anticipations d'inflation.
+Nous considérerons un schéma d'anticipations adaptatives pouvant se formaliser de la manière suivante :
+
+\[
+\pi^{e}_{t} - \pi^{e}_{t-1} = \lambda(\pi_t - \pi^{e}_{t-1})
+\]
+
+\vspace{2mm}
+
+Deux cas particuliers sont intéressants à noter ici. Tout d'abord, il convient de noter que $\lambda$ est un coefficient d'anticipation. Si $\lambda=1$, les anticipations d'inflation sont naïves \footnote{En effet, si $\lambda=1$, $\pi^{e}_{t}=\pi_t$}. Si $\lambda=0$, les anticipations d'inflation sont statiques \footnote{En effet, si $\lambda=0$, $\pi^{e}_{t} = \pi^{e}_{t-1}$}.
+
+\vspace{2mm}
+
+Il convient également de noter que le modèle d'anticipations adaptatives fait partie des modèles ayant une structure de Koyck \footnote{La structure de retard de Koyck est caractérisé par le fait que les effets décroissent avec le temps.}. Formellement, un modèle présentant une structure de retard de Koyck peut s'écrire de la manière suivante :
+
+\[
+y_t= \alpha^{*} + \theta y_{t-1} + \beta^{*} x_t + \epsilon_t^{*}
+\]
+
+Nous allons désormais montrer qu'il est possible d'écrire l'équation de la courbe de Philipps comme l'équation ci-dessus. Cette équation représentera le point d'ancrage de notre étude et nous servira fortement par la suite.
 
 ## Résultats des estimations
 
 Contenu des interprétations ici.
 
 ### Interprétation
-### Discussion
+### Tests statistiques
 
 # Conclusion
 
