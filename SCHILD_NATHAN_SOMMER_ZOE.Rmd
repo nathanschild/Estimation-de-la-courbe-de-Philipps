@@ -5,7 +5,9 @@ date: "2024-02-29"
 output: 
   pdf_document:
     toc: false
-    
+    latex_engine: xelatex
+header-includes:
+  - \usepackage{float}
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +25,7 @@ library(AER)
 library(readxl)
 library(ggplot2)
 ```
+
 
 \renewcommand{\abstractname}{Résumé}
 \begin{abstract}
@@ -409,7 +412,58 @@ Nous pouvons dès lors interpréter les résultats obtenus en estimant le modèl
 Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au sein des deux pays même si les résultats sont plus encourageants dans le cadre du Royaume-Uni. La principale différence entre les deux pays réside dans la significativité du coefficient associé au chômage retardé d'une période. En effet, celui-ci est significatif pour le Royaume-Uni mais pas pour la France.
 
 ### Tests statistiques
-### 
+
+\begin{table}[H]
+  \centering
+  \renewcommand{\arraystretch}{1.5} % Adjust row spacing
+  \caption{Tests de Stationnarité pour le Royaume-Uni}
+  \label{tab:stationarity_uk}
+  \begin{tabular}{l l c c c}
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de Test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Inflation & -0.4688 & -2.58 & Non \\
+    Dickey-Fuller (Dérive) & Inflation & -1.9032 & -3.46 & Non \\
+    Dickey-Fuller (Trend) & Inflation & -1.5697 & -3.99 & Non \\
+    KPSS & Inflation & 0.9708 & 0.739 & Non \\
+    Phillips-Perron & Inflation & -1.6658 & -3.472387 & Non \\
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Chômage & -1.5686 & -2.58 & Non \\
+    Dickey-Fuller (Dérive) & Chômage & -1.7547 & -3.46 & Non \\
+    Dickey-Fuller (Trend) & Chômage & -2.3805 & -3.99 & Non \\
+    KPSS & Chômage & 2.0001 & 0.739 & Non \\
+    Phillips-Perron & Chômage & -1.38 & -3.472387 & Non \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \renewcommand{\arraystretch}{1.5} % Adjust row spacing
+  \caption{Tests de Stationnarité pour la France}
+  \label{tab:stationarity_fr}
+  \begin{tabular}{l l c c c}
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de Test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Inflation & -2.3601 & -2.58 & Non \\
+    Dickey-Fuller (Dérive) & Inflation & -3.3703 & -3.46 & Non \\
+    Dickey-Fuller (Trend) & Inflation & -2.5792 & -3.99 & Non \\
+    KPSS & Inflation & 1.2569 & 0.739 & Non \\
+    Phillips-Perron & Inflation & -3.2686 & -3.472387 & Non \\
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Chômage & -0.4919 & -2.58 & Non \\
+    Dickey-Fuller (Dérive) & Chômage & -1.0777 & -3.46 & Non \\
+    Dickey-Fuller (Trend) & Chômage & -2.0805 & -3.99 & Non \\
+    KPSS & Chômage & 1.0023 & 0.739 & Non \\
+    Phillips-Perron & Chômage & -1.4598 & -3.472387 & Non \\
+    \hline
+  \end{tabular}
+\end{table}
 
 # Conclusion
 
