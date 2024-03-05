@@ -211,7 +211,7 @@ ggplot(dataUK, aes(x = unemp, y = inf)) +
 Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir. En effet, une tendance plutôt positive à l'air de se dégager du graphique, ce qui pourrait donner une première intuition négative quant à la validité de la courbe de Philipps.
 
 
-# Approche économétrique
+# Approche économétrique et théorique
 
 Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer. Par la suite,
 
@@ -284,14 +284,17 @@ En arrangeant \footnote{Il suffit de multiplier le tout par $1-\theta L$} :
 
 avec $\alpha^{*}=\alpha(1-\theta)$ , $\epsilon_t ^{*}= \epsilon_t(1-\theta L)= \epsilon_t -\theta \epsilon_{t-1}$.
 
-Voici l'équation économétrique fondamentale que nous allons estimer dans ce travail. Nous constatons que l'inflation dépend de sa propre valeur retardée d'une période ($AR(1)$), du chômage et du chômage retardé d'une période. De plus, le terme d'erreur suit un processus de moyenne mobile d'ordre 1 ($MA(1)$)
+Voici l'équation économétrique fondamentale que nous allons estimer dans ce travail. Nous constatons que l'inflation dépend de sa propre valeur retardée d'une période ($AR(1)$), du chômage et du chômage retardé d'une période. De plus, le terme d'erreur suit un processus de moyenne mobile d'ordre 1 ($MA(1)$). Il convient de noter que ce modèle est une variété du modèle d'anticipations adaptatives classique car $\pi_t$ dépend de sa valeur retardée (i.e. $\pi_{t-1}$), du chômage (i.e. $u_t$) et du chômage retardé d'une période (i.e. $u_{t-1}$).
 
-Par ailleurs, le coefficient $\theta$ est très important dans notre contexte. Si $\theta=1$, l'ajustement est très lent et les anticipations pourront être considérées comme étant statiques. Dans l'autre cas où $\theta=0$, le processus d'ajustement sera très rapide et les anticipations pourront être considérées comme naïves. 
+Par ailleurs, le coefficient $\theta$ est très important dans notre contexte. Si $\theta=1$, l'ajustement est très lent et les anticipations pourront être considérées comme étant statiques. Une telle valeur représentera également le fait que les agents ne font pas confiance à la Banque centrale et les annonces de celles-ci ne sont pas crédibles. Dans l'autre cas où $\theta=0$, le processus d'ajustement sera très rapide et les anticipations pourront être considérées comme naïves. Dans ce cas, les agents ont une totale confiance en la Banque centrale et les annonces de celles-ci seront crédibles aux yeux des agents.
 
 Par la suite, après avoir estimé les deux modèles, respectivement pour la France et pour le Royaume-Uni, nous mènerons des tests afin de savoir si les séries sont stationnaires ou non. Nous utiliserons plus particulièrement la méthode de Engle-Granger en deux étapes qui consiste à tout d'abord faire des tests de stationnarité puis un test de cointégration. Ensuite, si les variables sont cointégrées, il faudra adopter un modèle à correction d'erreurs qui combine le court-terme et le long-terme. En effet, si les deux variables ne sont pas cointégrées et qu'une régression simple présente un $R^{2}$ proche de 1 et une $DW$ proche de 0, la régression pourra être considérée comme falacieuse.
 
 
 ## Résultats des estimations
+
+Cette sous-section présente les résultats des estimations pour les deux pays. Il convient de noter que nous estimons dans un premier temps, un modèle linéaire simple entre l'inflation et le chômage. Ensuite, nous estimons le modèle présenté dans la sous-section précédente. Par ailleurs, nos estimations ne sont pas sujettes à l'hétéroscédasticité des perturbations ainsi qu'à l'autocorrélation des erreurs. En effet, nous avons pris l'initiative d'utiliser les écarts-types robustes afin de contrecarrer cela.
+
 
 ```{r,echo=TRUE, results='hide'}
 MCOfr <- lm(inf~unemp,data=dataFR)
@@ -317,7 +320,7 @@ stargazer(list(MCOfr, modelfr),
      & \multicolumn{2}{c}{\textit{Variable dépendante:}} \\
     \cline{2-3}
     & \multicolumn{2}{c}{$\pi_t$} \\
-    & \textit{OLS} & \textit{dynamic linear} \\
+    & \textit{OLS} & \textit{Dynamic linear} \\
     & (1) & (2) \\
     \hline
     $u_t$ & $-0.218^{**}$ & $-0.290^{*}$ \\
@@ -344,7 +347,9 @@ stargazer(list(MCOfr, modelfr),
   \end{tabular}
 \end{table}
 
-Commentaires :
+Les résultats français tendent à confirmer l'existence d'une courbe de Philipps. En effet, dans le premier modèle, le coefficient associé au chômage est négatif et signficatif conformément à l'intuition économique. Par ailleurs, ce modèle simple explique 1.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%. 
+
+Il convient désormais d'interpréter les résultats du modèle d'anticipations adaptatives \footnote{Modèle qui découle de la structure de Koyck} présenté précédemment. Une fois de plus, le coefficient au chômage est négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Il est fondamental de noter que ce coefficient est très proche de 1, ce qui peut nous indiquer deux éléments. Premièrement, nous pouvons penser que les anticipations sont statiques \footnote{Cela signifie que les agents économiques ne revoient pas leurs anticipations d'une période à l'autre}. Deuxièmement, le coefficient étant proche de 1, cela signifie que le processus de convergence est très lent. Ce qui signifie que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période n'est pas significatif. Ce modèle explique 94.3\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
 ```{r,echo=TRUE, results='hide'}
 MCOuk <- lm(inf~unemp,data=dataUK)
@@ -370,7 +375,7 @@ stargazer(list(MCOuk, modeluk),
      & \multicolumn{2}{c}{\textit{Variable dépendante :}} \\
     \cline{2-3}
     & \multicolumn{2}{c}{$\pi_t$} \\
-    & \textit{OLS} & \textit{dynamic linear} \\
+    & \textit{OLS} & \textit{Dynamic linear} \\
     & (1) & (2) \\
     \hline
     $u_t$ & 0.325$^{***}$ & -0.534$^{***}$ \\
@@ -397,12 +402,14 @@ stargazer(list(MCOuk, modeluk),
   \end{tabular}
 \end{table}
 
+Les résultats du Royaume-Uni sont dans un premier temps moins encourageants que les résultats français. En effet, dans le cadre du modèle linéaire simple, le coefficient associé au chômage est certes largement significatif, il est positif. Cela vient confirmer l'intuition graphique mais ce signe positif vient contredire l'intuition économique de la courbe de Philipps présupposant une relation négative entre l'inflation et le chômage.  Par ailleurs, ce modèle simple explique 13.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%.
 
+Nous pouvons dès lors interpréter les résultats obtenus en estimant le modèle d'anticipations adaptatives. Cette fois-ci, les résultats sont très encourageants. En effet, le coefficient associé au chômage non retardé est cette fois-ci négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Ce coefficient est proche de 1, les commentaires sont alors similaires à ceux du modèle précédent. En effet, nous pouvons penser que les anticipations sont statiques. Par ailleurs, cela signifie que le processus de convergence est très lent. Ce qui indique le fait que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période est significatif et positif. Ce modèle explique 91.9\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
-Commentaires : 
+Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au sein des deux pays même si les résultats sont plus encourageants dans le cadre du Royaume-Uni. La principale différence entre les deux pays réside dans la significativité du coefficient associé au chômage retardé d'une période. En effet, celui-ci est significatif pour le Royaume-Uni mais pas pour la France.
 
-### Interprétation
 ### Tests statistiques
+### 
 
 # Conclusion
 
