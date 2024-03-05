@@ -102,16 +102,76 @@ Avant de passer aux résultats des estimations, il convient de considérer des s
 \vspace{2mm}
 
 On peut donc par la suite éditer un tableau de statistiques descriptives pour la France et le Royaume-Uni.
-```{r}
+```{r,echo=TRUE, results='hide'}
 statsFR <- dataFR %>% select(unemp,inf)
 basicStats(statsFR)
 ```
 
-```{r}
+\begin{table}[!htbp]
+  \centering
+  \caption{Statistiques descriptives pour la France}
+  \label{}
+  \begin{tabular}{@{\extracolsep{5pt}}ccc}
+    \\[-1.8ex]\hline
+    \hline \\[-1.8ex]
+    & Chômage & Inflation \\
+    \hline \\[-1.8ex]
+    nobs & $160.000000$ & $160.000000$ \\
+    NAs & $0.000000$ & $0.000000$ \\
+    Minimum & $7.133333$ & $-0.423247$ \\
+    Maximum & $12.500000$ & $9.833547$ \\
+    1. Quartile & $8.800000$ & $1.161628$ \\
+    3. Quartile & $10.441667$ & $2.722109$ \\
+    Mean & $9.747500$ & $2.238453$ \\
+    Median & $9.566667$ & $1.814345$ \\
+    Sum & $1559.600000$ & $358.152550$ \\
+    SE Mean & $0.108438$ & $0.152846$ \\
+    LCL Mean & $9.533335$ & $1.936583$ \\
+    UCL Mean & $9.961665$ & $2.540323$ \\
+    Variance & $1.881419$ & $3.737897$ \\
+    Stdev & $1.371648$ & $1.933364$ \\
+    Skewness & $0.345291$ & $1.999678$ \\
+    Kurtosis & $-0.553031$ & $4.493653$ \\
+    \hline \\[-1.8ex]
+  \end{tabular}
+\end{table}
+
+
+```{r,echo=TRUE, results='hide'}
 statsUK <- dataUK %>% select(unemp,inf)
 basicStats(statsUK)
 
 ```
+\begin{table}[!htbp]
+  \centering
+  \caption{Statistiques descriptives pour le Royaume-Uni}
+  \label{}
+  \begin{tabular}{@{\extracolsep{5pt}}ccc}
+    \\[-1.8ex]\hline
+    \hline \\[-1.8ex]
+    & Chômage & Inflation \\
+    \hline \\[-1.8ex]
+    nobs & $160.000000$ & $160.000000$ \\
+    NAs & $0.000000$ & $0.000000$ \\
+    Minimum & $3.600000$ & $0.300000$ \\
+    Maximum & $11.300000$ & $9.400000$ \\
+    1. Quartile & $5.100000$ & $1.700000$ \\
+    3. Quartile & $8.425000$ & $3.979275$ \\
+    Mean & $6.965625$ & $3.016441$ \\
+    Median & $6.600000$ & $2.400000$ \\
+    Sum & $1114.500000$ & $482.630568$ \\
+    SE Mean & $0.179476$ & $0.153997$ \\
+    LCL Mean & $6.611161$ & $2.712298$ \\
+    UCL Mean & $7.320089$ & $3.320584$ \\
+    Variance & $5.153842$ & $3.794409$ \\
+    Stdev & $2.270208$ & $1.947924$ \\
+    Skewness & $0.440494$ & $1.320311$ \\
+    Kurtosis & $-1.023361$ & $1.322464$ \\
+    \hline \\[-1.8ex]
+  \end{tabular}
+\end{table}
+
+
 \vspace{2mm}
 
 Nous observons premièrement que pour la France, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela signifie que les distributions ont une asymétrie à droite, nous pouvons alors en déduire que la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage français moyen est de l'ordre de $9.75$ tandis que sa médiane est de l'ordre de $9.57$. Au niveau de l'inflation, la moyenne est de l'ordre de $2.24$ et sa médiane est de $1.81$. 
@@ -148,7 +208,7 @@ ggplot(dataUK, aes(x = unemp, y = inf)) +
 ```
 \vspace{2mm}
 
-Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir même si une tendance négative semble se dégager.
+Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir. En effet, une tendance plutôt positive à l'air de se dégager du graphique, ce qui pourrait donner une première intuition négative quant à la validité de la courbe de Philipps.
 
 
 # Approche économétrique
@@ -233,35 +293,111 @@ Par la suite, après avoir estimé les deux modèles, respectivement pour la Fra
 
 ## Résultats des estimations
 
-```{r}
+```{r,echo=TRUE, results='hide'}
 MCOfr <- lm(inf~unemp,data=dataFR)
-modelfr <- dynlm(inf~L(inf,1)+unemp+L(unemp,1),data=dataFR_ts)
+modelfr <- dynlm(inf~unemp+L(inf,1)+L(unemp,1),data=dataFR_ts)
 rob_seFR <- list(sqrt(diag(vcovHC(MCOfr, type = "HC1"))),
                  sqrt(diag(vcovHC(modelfr, type = "HC1"))))
 
 stargazer(list(MCOfr, modelfr),
-          title = "Table 2 : Résultat des estimations pour la France",
+          title = "Résultats des estimations pour la France",
           align = T, 
-          type = "text",
-          no.space = F,se=rob_seFR)
+          type = "latex",
+          no.space = F,
+          se=rob_seFR)
 
 ```
-
+\begin{table}[!htbp]
+  \centering
+  \caption{Résultats des estimations pour la France}
+  \label{tab:results_france}
+  \begin{tabular}{lcc}
+    \hline
+    \hline
+     & \multicolumn{2}{c}{\textit{Variable dépendante:}} \\
+    \cline{2-3}
+    & \multicolumn{2}{c}{$\pi_t$} \\
+    & \textit{OLS} & \textit{dynamic linear} \\
+    & (1) & (2) \\
+    \hline
+    $u_t$ & $-0.218^{**}$ & $-0.290^{*}$ \\
+    & (0.086) & (0.165) \\
+    & & \\
+    $\pi_{t-1}$ & & $0.944^{***}$ \\
+    & & (0.023) \\
+    & & \\
+    $u_{t-1}$ & & $0.223$ \\
+    & & (0.168) \\
+    & & \\
+    $Constante$ & $4.365^{***}$ & $0.751^{**}$ \\
+    & (0.903) & (0.310) \\
+    & & \\
+    \hline
+    Observations & 160 & 159 \\
+    $R^2$ & 0.024 & 0.945 \\
+    Adjusted $R^2$ & 0.018 & 0.943 \\
+    Residual Std. Error & 1.916 (df = 158) & 0.442 (df = 155) \\
+    F Statistic & 3.877$^{*}$ (df = 1; 158) & 879.290$^{***}$ (df = 3; 155) \\
+    \hline
+    \hline
+    \textit{Note:} & \multicolumn{2}{r}{$^{*}p<0.1; ^{**}p<0.05; ^{***}p<0.01$} \\
+  \end{tabular}
+\end{table}
 
 Commentaires :
 
-```{r}
+```{r,echo=TRUE, results='hide'}
 MCOuk <- lm(inf~unemp,data=dataUK)
 modeluk <- dynlm(inf~L(inf,1)+unemp+L(unemp,1),data=dataUK_ts)
 rob_seUK <- list(sqrt(diag(vcovHC(MCOuk, type = "HC1"))),
                  sqrt(diag(vcovHC(modeluk, type = "HC1"))))
 
 stargazer(list(MCOuk, modeluk),
-          title = "Table 3 : Résultat des estimations pour le Royaume-Uni",
+          title = "Résultat des estimations pour le Royaume-Uni",
           align = T, 
-          type = "text",
-          no.space = F,se=rob_seUK)
+          type = "latex",
+          no.space = F,
+          se=rob_seUK)
 ```
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Résultats des estimations pour le Royaume-Uni}
+  \label{tab:results_uk}
+  \begin{tabular}{lcc}
+    \hline
+    \hline
+     & \multicolumn{2}{c}{\textit{Variable dépendante :}} \\
+    \cline{2-3}
+    & \multicolumn{2}{c}{$\pi_t$} \\
+    & \textit{OLS} & \textit{dynamic linear} \\
+    & (1) & (2) \\
+    \hline
+    $u_t$ & 0.325$^{***}$ & -0.534$^{***}$ \\
+    & (0.064) & (0.194) \\
+    & & \\
+    $\pi_{t-1}$ & & 1.043$^{***}$ \\
+    & & (0.032) \\
+    & & \\
+    $u_{t-1}$ & & 0.460$^{**}$ \\
+    & & (0.185) \\
+    & & \\
+    $Constante$ & 0.754 & 0.397$^{**}$ \\
+    & (0.505) & (0.162) \\
+    & & \\
+    \hline
+    Observations & 160 & 159 \\
+    $R^2$ & 0.143 & 0.920 \\
+    Adjusted $R^2$ & 0.138 & 0.919 \\
+    Residual Std. Error & 1.809 (df = 158) & 0.555 (df = 155) \\
+    F Statistic & 26.438$^{***}$ (df = 1; 158) & 597.455$^{***}$ (df = 3; 155) \\
+    \hline
+    \hline
+    \textit{Note:} & \multicolumn{2}{r}{$^{*}p<0.1; ^{**}p<0.05; ^{***}p<0.01$} \\
+  \end{tabular}
+\end{table}
+
+
 
 Commentaires : 
 
