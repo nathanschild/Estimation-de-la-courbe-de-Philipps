@@ -42,7 +42,14 @@ Cette étude analyse la validité empirique de la courbe de Philipps au sein du 
 
 # Introduction
 
-Philipps en 1958 introduit une relation entre le taux de croissance des salaires et le chômage. Plus précisément, il établit une relation décroissante entre ces deux variables. Une telle relation suppose l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU).
+
+La courbe de Phillips, érigée en pilier de la macroéconomie depuis 1958, tire son origine de l'article de l'économiste William Phillips, intitulé "The Relation between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom". Cette théorie établit une relation décroissante entre le taux de croissance des salaires et le chômage, supposant l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU). La découverte de cette relation au Royaume-Uni a suscité l'intérêt d'autres économistes, dont Paul Samuelson et Robert Solow, qui ont ultérieurement lié l'inflation au chômage, présentant une relation négative entre le taux d'inflation et le taux de chômage.
+Cependant, la portée de la courbe de Phillips se limitait initialement au court terme. Milton Friedman et Edmund Phelps ont mis en lumière ses lacunes lors du phénomène de Stagflation dans les années 1970, caractérisé par des taux élevés d'inflation et de chômage. Leur contribution a ajouté une dimension anticipative à la courbe de Phillips, désormais connue sous le nom de courbe de Phillips augmentée des anticipations adaptatives.
+La courbe de Phillips demeure cruciale en macroéconomie, symbolisant l'effet d'action de la banque centrale. Cependant, son utilisation par les autorités est limitée au court terme en tant que solution temporaire pour réduire le taux de chômage.
+Dans cette étude comparative entre la France et le Royaume-Uni, deux pays aux similitudes apparentes mais aux différences fondamentales, nous explorons le lien entre la flexibilité du marché du travail et la courbe de Phillips. La rigidité du marché du travail français, comparée à la flexibilité du marché du travail anglais, peut influencer la pente ou la forme de la courbe de Phillips. De plus, ces deux pays, en tant que puissances européennes majeures, sont également des acteurs de premier plan dans la mondialisation. Nous émettons l'hypothèse d'une courbe de Phillips plus prononcée du côté anglais en raison de la plus grande flexibilité de son marché du travail.
+En tenant compte des nouvelles technologies et des politiques d'inflation actuelles qui semblent aplatir la courbe de Phillips, nos hypothèses incluent l'absence de relation ou, du moins, la faiblesse de cette courbe. Nous chercherons d'abord à vérifier la validité de la courbe de Phillips à long terme, puis à évaluer la magnitude de cette relation. Ces résultats nous permettront de tirer des conclusions sur la capacité des pays à utiliser cette relation dans l'orientation de leur politique monétaire.
+
+La première section présente les données dans son ensemble en y introduisant notamment les sources, les statistiques descriptives et des graphiques afin de mieux cerner le sujet. La deuxième section présente l'approche méthodologique utilisée dans cette étude. En effet, nous traiterons des fondements théoriques de la courbe de Philipps puis nous présenterons les résultats de notre étude. Enfin, des tests statistiques sont menés afin de tester la validité de nos résultats.
 
 # Présentation des données et statistiques descriptives
 
@@ -53,7 +60,7 @@ Cette section a pour but de décrire la méthodologie utilisée dans cette étud
 
 Il convient dans un premier temps de charger la base de données et d'en montrer les premières lignes.
 
-```{r}
+```{r,echo=FALSE,results='hide'}
 data <- read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
 head(data)
 ```
@@ -72,7 +79,7 @@ Tout d'abord, notre base de données contient 160 observations par pays. Ce sont
 \vspace{2mm}
 
 Il convient de noter que par la suite, nous séparerons les deux pays afin d'améliorer la lisibilité de l'étude.
-```{r}
+```{r,echo=FALSE}
 dataFR <- data %>% filter(country=="FRA")
 dataUK <- data %>% filter(country=="UK")
 ```
@@ -105,12 +112,12 @@ Avant de passer aux résultats des estimations, il convient de considérer des s
 \vspace{2mm}
 
 On peut donc par la suite éditer un tableau de statistiques descriptives pour la France et le Royaume-Uni.
-```{r,echo=TRUE, results='hide'}
+```{r,echo=FALSE, results='hide'}
 statsFR <- dataFR %>% select(unemp,inf)
 basicStats(statsFR)
 ```
 
-\begin{table}[!htbp]
+\begin{table}[H]
   \centering
   \caption{Statistiques descriptives pour la France}
   \label{}
@@ -127,10 +134,7 @@ basicStats(statsFR)
     3. Quartile & $10.441667$ & $2.722109$ \\
     Mean & $9.747500$ & $2.238453$ \\
     Median & $9.566667$ & $1.814345$ \\
-    Sum & $1559.600000$ & $358.152550$ \\
     SE Mean & $0.108438$ & $0.152846$ \\
-    LCL Mean & $9.533335$ & $1.936583$ \\
-    UCL Mean & $9.961665$ & $2.540323$ \\
     Variance & $1.881419$ & $3.737897$ \\
     Stdev & $1.371648$ & $1.933364$ \\
     Skewness & $0.345291$ & $1.999678$ \\
@@ -139,13 +143,15 @@ basicStats(statsFR)
   \end{tabular}
 \end{table}
 
+Nous observons premièrement que pour la France, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela signifie que les distributions ont une asymétrie à droite, nous pouvons alors en déduire que la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage français moyen est de l'ordre de $9.75$ tandis que sa médiane est de l'ordre de $9.57$. Au niveau de l'inflation, la moyenne est de l'ordre de $2.24$ et sa médiane est de $1.81$.
 
-```{r,echo=TRUE, results='hide'}
+
+```{r,echo=FALSE, results='hide'}
 statsUK <- dataUK %>% select(unemp,inf)
 basicStats(statsUK)
 
 ```
-\begin{table}[!htbp]
+\begin{table}[H]
   \centering
   \caption{Statistiques descriptives pour le Royaume-Uni}
   \label{}
@@ -162,10 +168,7 @@ basicStats(statsUK)
     3. Quartile & $8.425000$ & $3.979275$ \\
     Mean & $6.965625$ & $3.016441$ \\
     Median & $6.600000$ & $2.400000$ \\
-    Sum & $1114.500000$ & $482.630568$ \\
     SE Mean & $0.179476$ & $0.153997$ \\
-    LCL Mean & $6.611161$ & $2.712298$ \\
-    UCL Mean & $7.320089$ & $3.320584$ \\
     Variance & $5.153842$ & $3.794409$ \\
     Stdev & $2.270208$ & $1.947924$ \\
     Skewness & $0.440494$ & $1.320311$ \\
@@ -173,11 +176,6 @@ basicStats(statsUK)
     \hline \\[-1.8ex]
   \end{tabular}
 \end{table}
-
-
-\vspace{2mm}
-
-Nous observons premièrement que pour la France, les distributions du chômage et de l'inflation ont une skewness positive ($S>0$). Cela signifie que les distributions ont une asymétrie à droite, nous pouvons alors en déduire que la moyenne est supérieure à la médiane pour les deux distributions. En effet, le taux de chômage français moyen est de l'ordre de $9.75$ tandis que sa médiane est de l'ordre de $9.57$. Au niveau de l'inflation, la moyenne est de l'ordre de $2.24$ et sa médiane est de $1.81$. 
 
 \vspace{2mm}
 
@@ -191,7 +189,10 @@ Par ailleurs, une constatation supplémentaire peut être réalisée. En effet, 
 
 On peut par ailleurs, considérer des graphiques afin d'analyser la relation entre l'inflation et le chômage pour les deux pays.
 
-```{r,error=FALSE}
+```{r,echo=FALSE,error=FALSE, fig.width=6, fig.height=3}
+
+par(mfrow=c(1,2))
+
 ggplot(dataFR, aes(x = unemp, y = inf)) +
   geom_point(size = 3, color = "steelblue") +
   geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
@@ -207,6 +208,8 @@ ggplot(dataUK, aes(x = unemp, y = inf)) +
        y = "Inflation", 
        title = "Relation inflation-chômage au Royaume-Uni") +
   theme_minimal() 
+
+par(mfrow=c(1,1))
 
 ```
 \vspace{2mm}
@@ -299,7 +302,7 @@ Par la suite, après avoir estimé les deux modèles, respectivement pour la Fra
 Cette sous-section présente les résultats des estimations pour les deux pays. Il convient de noter que nous estimons dans un premier temps, un modèle linéaire simple entre l'inflation et le chômage. Ensuite, nous estimons le modèle présenté dans la sous-section précédente. Par ailleurs, nos estimations ne sont pas sujettes à l'hétéroscédasticité des perturbations ainsi qu'à l'autocorrélation des erreurs. En effet, nous avons pris l'initiative d'utiliser les écarts-types robustes afin de contrecarrer cela.
 
 
-```{r,echo=TRUE, results='hide'}
+```{r,echo=FALSE, results='hide'}
 MCOfr <- lm(inf~unemp,data=dataFR)
 modelfr <- dynlm(inf~unemp+L(inf,1)+L(unemp,1),data=dataFR_ts)
 rob_seFR <- list(sqrt(diag(vcovHC(MCOfr, type = "HC1"))),
@@ -313,7 +316,7 @@ stargazer(list(MCOfr, modelfr),
           se=rob_seFR)
 
 ```
-\begin{table}[!htbp]
+\begin{table}[H]
   \centering
   \caption{Résultats des estimations pour la France}
   \label{tab:results_france}
@@ -354,7 +357,7 @@ Les résultats français tendent à confirmer l'existence d'une courbe de Philip
 
 Il convient désormais d'interpréter les résultats du modèle d'anticipations adaptatives \footnote{Modèle qui découle de la structure de Koyck} présenté précédemment. Une fois de plus, le coefficient au chômage est négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Il est fondamental de noter que ce coefficient est très proche de 1, ce qui peut nous indiquer deux éléments. Premièrement, nous pouvons penser que les anticipations sont statiques \footnote{Cela signifie que les agents économiques ne revoient pas leurs anticipations d'une période à l'autre}. Deuxièmement, le coefficient étant proche de 1, cela signifie que le processus de convergence est très lent. Ce qui signifie que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période n'est pas significatif. Ce modèle explique 94.3\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
-```{r,echo=TRUE, results='hide'}
+```{r,echo=FALSE, results='hide'}
 MCOuk <- lm(inf~unemp,data=dataUK)
 modeluk <- dynlm(inf~L(inf,1)+unemp+L(unemp,1),data=dataUK_ts)
 rob_seUK <- list(sqrt(diag(vcovHC(MCOuk, type = "HC1"))),
@@ -368,7 +371,7 @@ stargazer(list(MCOuk, modeluk),
           se=rob_seUK)
 ```
 
-\begin{table}[!htbp]
+\begin{table}[H]
   \centering
   \caption{Résultats des estimations pour le Royaume-Uni}
   \label{tab:results_uk}
@@ -411,12 +414,137 @@ Nous pouvons dès lors interpréter les résultats obtenus en estimant le modèl
 
 Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au sein des deux pays même si les résultats sont plus encourageants dans le cadre du Royaume-Uni. La principale différence entre les deux pays réside dans la significativité du coefficient associé au chômage retardé d'une période. En effet, celui-ci est significatif pour le Royaume-Uni mais pas pour la France.
 
-### Tests statistiques
+### Tests de stationnarité
+
+```{r,echo=FALSE, results='hide'}
+
+# ---Le cas français---
+
+ts_inflation <- ts(dataFR$inf)
+ts_unemp <- ts(dataFR$unemp)
+
+# ---Le cas anglais---
+
+ts_inflation2 <- ts(dataUK$inf)
+ts_unemp2 <- ts(dataUK$unemp)
+
+```
+
+
+```{r,echo=FALSE, results='hide'}
+
+# ---Le cas français---
+result_df_no_trend_drift_inflation <- ur.df(ts_inflation,type="none")
+result_df_with_drift_inflation <- ur.df(ts_inflation,type="drift")
+result_df_with_trend_inflation <- ur.df(ts_inflation,type="trend")
+
+summary(result_df_no_trend_drift_inflation)
+summary(result_df_with_drift_inflation)
+summary(result_df_with_trend_inflation)
+
+result_df_no_trend_drift_unemp <- ur.df(ts_unemp,type="none")
+result_df_with_drift_unemp <- ur.df(ts_unemp,type="drift")
+result_df_with_trend_unemp <- ur.df(ts_unemp,type="trend")
+
+summary(result_df_no_trend_drift_unemp)
+summary(result_df_with_drift_unemp)
+summary(result_df_with_trend_unemp)
+
+
+# ---Le cas anglais
+
+result_df_no_trend_drift_inflation2 <- ur.df(ts_inflation2,type="none")
+result_df_with_drift_inflation2 <- ur.df(ts_inflation2,type="drift")
+result_df_with_trend_inflation2 <- ur.df(ts_inflation2,type="trend")
+
+summary(result_df_no_trend_drift_inflation2)
+summary(result_df_with_drift_inflation2)
+summary(result_df_with_trend_inflation2)
+
+
+
+result_df_no_trend_drift_unemp2 <- ur.df(ts_unemp2,type="none")
+result_df_with_drift_unemp2 <- ur.df(ts_unemp2,type="drift")
+result_df_with_trend_unemp2 <- ur.df(ts_unemp2,type="trend")
+
+summary(result_df_no_trend_drift_unemp2)
+summary(result_df_with_drift_unemp2)
+summary(result_df_with_trend_unemp2)
+
+```
+
+```{r,echo=FALSE, results='hide'}
+
+# ---Le cas français---
+
+summary(ur.kpss(ts_inflation,type="mu"))
+summary(ur.kpss(ts_unemp,type="mu"))
+result_pp_inflation <- ur.pp(ts_inflation, type = "Z-tau")
+result_pp_unemp <- ur.pp(ts_unemp, type = "Z-tau")
+summary(result_pp_inflation)
+summary(result_pp_unemp)
+
+# ---Le cas anglais---
+
+
+summary(ur.kpss(ts_inflation2,type="mu"))
+summary(ur.kpss(ts_unemp2,type="mu"))
+result_pp_inflation2 <- ur.pp(ts_inflation2, type = "Z-tau")
+result_pp_unemp2 <- ur.pp(ts_unemp2, type = "Z-tau")
+
+
+summary(result_pp_inflation2)
+summary(result_pp_unemp2)
+
+```
+
+
+Cette sous-section a pour but de tester la stationnarité \footnote{Une série temporelle est dite stationnaire si ses propriétés statistiques ne changent pas avec le temps.} du chômage et de l'inflation puis la cointégration entre ces deux variables. Pour cela, nous utiliserons la méthode en deux étapes d'Engle-Granger qui consiste à :
+
+\begin{itemize}
+\item Dans un premier temps, tester la stationnarité des variables puis leur cointégration
+\item Si les variables sont cointégrées, il faudra alors estimer un modèle à correction d'erreurs \footnote{Modèle qui prend en compte la dynamique de court-terme et de long-terme}.
+\end{itemize}
+
+Il convient d'énoncer les tests que nous allons effectuer dans le reste de notre étude :
+
+\begin{itemize}
+\item Le test de Dickey-fuller comportant trois modèles différents \footnote{Le modèle sans tendance et dérive, le modèle avec dérive et le modèle avec tendance et dérive.}. L'hypothèse nulle de ce test suppose l'existence d'une racine unitaire (i.e. $\phi=1$) contre l'hypothèse alternative selon laquelle il n'existe pas de racine unitaire (i.e. $|\phi|<1$). Ainsi, dès lors que le statistique de test est inférieure \footnote{C'est un test unilatéral à gauche} à la valeur critique , nous concluerons à la stationnarité de la variable.
+\item Le test KPSS qui diffère du test de Dickey-Fuller par le fait que les hypothèses sont inversées. En effet, l'hypothèse nulle suppose la stationnarité de la variable tandis que l'hypothèse alternative suppose la non-stationnarité. Dès lors que la statistique de test est inférieure à la valeur critique, on concluera à la stationnarité de la variable.
+\item Le test de Phillips-Perron suit les mêmes hypothèses que le test de Dickey-Fuller. En effet, l'hypothèse nulle suppose l'existence d'une racine unitaire contre l'hypothèse alternative supposant l'inexistence d'une racine unitaire. On concluera à la stationnarité de la variable dès lors que la statistique de test est inférieure à la valeur critique.
+\end{itemize}
+
+
+Avant de passer aux résultats des tests, il convient de constater à l'aide de la fonction d'autocorrélation la stationnarité des séries ou non. Cela nous donnera une première intuition quant à la stationnarité de celles-ci. Par ailleurs, dans le reste de l'analyse, les deux pays seront séparés pour des raisons évidentes.
+
+```{r,echo=FALSE, fig.width=6, fig.height=3}
+
+par(mfrow=c(1,2))
+
+acf(ts_inflation)
+acf(ts_unemp)
+
+par(mfrow=c(1,1))
+```
+
+Au niveau français, on constate que les deux séries ont des fonctions d'autocorrélation qui décroissent de manière plutôt lente. En effet, c'est surtout la cas pour le chômage français qui n'apparaît pas du tout stationnaire d'un point de vue grahpique. Néanmoins, c'est un peu plus complexe à établir pour l'inflation même si la série ne semble pas stationnaire.
+
+```{r,echo=FALSE, fig.width=6, fig.height=3}
+
+par(mfrow=c(1,2))
+
+acf(ts_inflation2)
+acf(ts_unemp2)
+
+par(mfrow=c(1,1))
+```
+
+Au niveau du Royaume-Uni, les constatations sont identiques. En effet, les deux fonctions d'autocorrélation décroissent lentement, ce qui pourrait indiquer que les deux séries ne sont en aucun cas stationnaires. Nous verrons par la suite que les résultats dégagés à partir de la fonction d'autocorrélation vont dans le même sens que ceux des tests présentés par la suite
 
 \begin{table}[H]
   \centering
   \renewcommand{\arraystretch}{1.5} % Adjust row spacing
-  \caption{Tests de Stationnarité pour le Royaume-Uni}
+  \caption{Tests de Stationnarité pour le Royaume-Uni I}
   \label{tab:stationarity_uk}
   \begin{tabular}{l l c c c}
     \hline
@@ -439,10 +567,11 @@ Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au
   \end{tabular}
 \end{table}
 
+
 \begin{table}[H]
   \centering
   \renewcommand{\arraystretch}{1.5} % Adjust row spacing
-  \caption{Tests de Stationnarité pour la France}
+  \caption{Tests de Stationnarité pour la France I}
   \label{tab:stationarity_fr}
   \begin{tabular}{l l c c c}
     \hline
@@ -464,6 +593,124 @@ Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au
     \hline
   \end{tabular}
 \end{table}
+
+
+Les deux tables présentent les résultats des tests énoncés précédemment. Tout d'abord, prenons le cas français. Les résultats des tests sont formels au seuil de 1\%. Tous les tests suggèrent que l'inflation et le chômage en France ne sont pas stationnaires. En effet, pour les tests de Dickey-Fuller, la valeur de la statistique est toujours supérieure à la valeur critique au seuil de 1\%, ce qui suggère l'absence de stationnarité pour les deux variables. Par ailleurs, pour le test KPSS, la statistique de test est supérieure à la valeur critique, ce qui suggère le rejet de l'hypothèse nulle et donc le rejet de la stationnarité \footnote{Les hypothèses sont différentes dans le test KPSS}. Enfin, le test de Phillips-Perron suggère également l'absence de stationnarité au seuil de 1\%. 
+
+Ensuite, prenons le cas du Royaume-Uni. Les résultats des tests sont formels au seuil de 1\%. Tous les tests suggèrent que l'inflation et le chômage ne sont pas stationnaires. En effet, pour les tests de Dickey-Fuller, la valeur de la statistique est toujours supérieure à la valeur critique au seuil de 1\%, ce qui suggère l'absence de stationnarité pour les deux variables. Par ailleurs, pour le test KPSS, la statistique de test est supérieure à la valeur critique, ce qui suggère le rejet de l'hypothèse nulle et donc le rejet de la stationnarité. Enfin, le test de Phillips-Perron suggère également l'absence de stationnarité au seuil de 1\%. 
+
+Ainsi, pour les deux pays, les variables représentant l'inflation et le chômage ne sont pas stationnaires initialement. On dit alors qu'elles ne sont pas $I(0)$. Il convient alors de les différencier afin de voir si le fait de prendre la différence peut permettre de rendre ces variables stationnaires. Si c'est le cas, les variables seront considérées comme $I(1)$, c'est-à-dire qu'elles nécessitent une différenciation pour être considérées comme stationnnaires.
+
+```{r,echo=FALSE,results='hide'}
+
+# --- Le cas français---
+
+summary(ur.df(diff(ts_unemp),type="trend"))
+summary(ur.df(diff(ts_unemp),type="none"))
+summary(ur.df(diff(ts_unemp),type="drift"))
+
+summary(ur.df(diff(ts_inflation),type="trend"))
+summary(ur.df(diff(ts_inflation),type="none"))
+summary(ur.df(diff(ts_inflation),type="drift"))
+
+summary(ur.kpss(diff(ts_inflation),type="mu"))
+summary(ur.kpss(diff(ts_unemp),type="mu"))
+
+summary(ur.pp(diff(ts_inflation), type = "Z-tau"))
+summary(ur.pp(diff(ts_unemp), type = "Z-tau"))
+
+# --- Le cas anglais---
+
+summary(ur.df(diff(ts_unemp2),type="trend"))
+summary(ur.df(diff(ts_unemp2),type="none"))
+summary(ur.df(diff(ts_unemp2),type="drift"))
+
+summary(ur.df(diff(ts_inflation2),type="trend"))
+summary(ur.df(diff(ts_inflation2),type="none"))
+summary(ur.df(diff(ts_inflation2),type="drift"))
+
+summary(ur.kpss(diff(ts_inflation2),type="mu"))
+summary(ur.kpss(diff(ts_unemp2),type="mu"))
+
+summary(ur.pp(diff(ts_inflation2), type = "Z-tau"))
+summary(ur.pp(diff(ts_unemp2), type = "Z-tau"))
+
+
+```
+
+\begin{table}[H]
+  \centering
+  \renewcommand{\arraystretch}{1.5} % Adjust row spacing
+  \caption{Tests de Stationnarité pour la France II}
+  \label{tab:stationarity_fr2}
+  \begin{tabular}{l l c c c}
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de Test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Inflation en différence & -6.536  & -2.58 & Oui \\
+    Dickey-Fuller (Dérive) & Inflation en différence & -6.5329  & -3.46 & Oui \\
+    Dickey-Fuller (Trend) & Inflation en différence & -4.5429  & -3.99 & Oui \\
+    KPSS & Inflation en différence & 0.5127  & 0.739 & Oui \\
+    Phillips-Perron & Inflation en différence & -8.0764 & -3.472387 & Oui \\
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Chômage en différence & -5.6857 & -2.58 & Oui \\
+    Dickey-Fuller (Dérive) & Chômage en différence & -5.6828 & -3.46 & Oui \\
+    Dickey-Fuller (Trend) & Chômage en différence & -5.7357 & -3.99 & Oui \\
+    KPSS & Chômage en différence & 0.2674  & 0.739 & Oui \\
+    Phillips-Perron & Chômage en différence & -10.2647  & -3.472387 & Oui \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \renewcommand{\arraystretch}{1.5} % Adjust row spacing
+  \caption{Tests de Stationnarité pour le Royaume-Uni II}
+  \label{tab:stationarity_uk}
+  \begin{tabular}{l l c c c}
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de Test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Inflation en différence & -6.1953  & -2.58 & Oui \\
+    Dickey-Fuller (Dérive) & Inflation en différence & -6.1902 & -3.46 & Oui \\
+    Dickey-Fuller (Trend) & Inflation en différence & -6.3427 & -3.99 & Oui \\
+    KPSS & Inflation en différence & 0.2483  & 0.739 & Oui \\
+    Phillips-Perron & Inflation en différence & -8.1655  & -3.472387 & Oui \\
+    \hline
+    \textbf{Test} & \textbf{Variable} & \textbf{Statistique de test} & \textbf{Valeur critique à 1\%} & \textbf{Stationnaire} \\
+    \hline
+    Dickey-Fuller (Pur) & Chômage en différence &  -4.4669  & -2.58 & Oui \\
+    Dickey-Fuller (Dérive) & Chômage en différence & -4.5513 & -3.46 & Oui \\
+    Dickey-Fuller (Trend) & Chômage en différence & -4.5429 & -3.99 & Oui \\
+    KPSS & Chômage en différence &  0.0739  & 0.739 & Oui \\
+    Phillips-Perron & Chômage en différence & -6.1877  & -3.472387 & Oui \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Les résultats des tests sont formels au seuil de 1\%, les variables une fois qu'elles sont différenciées deviennent stationnaires. Dans tous les tests, il est suggeré que les variables en différence sont stationnaires. On peut donc aisément en déduire que les variables sont $I(1)$ pour les deux pays. Il faut désormais réaliser un test de cointégration afin de voir s'il existe une relation de long-terme entre l'inflation et le chômage pour les deux pays.
+
+### Test de cointégration
+
+Après avoir testé la stationnairité des variables de l'étude, nous avons constaté qu'il était nécessaire de différencier une fois les variables pour qu'elles soient stationnaires (i.e. elles sont $I(1)$).  
+Il est aisé de tester une relation de cointégration entre deux variables, pour cela il suffit :
+
+\begin{itemize}
+\item D'estimer un modèle de régression simple entre les deux variables
+\item Ensuite, il faut prendre les résidus de ce modèle
+\item Enfin, il faut mener un test de stationnarité sur les résidus. Si les résidus sont stationnaires, alors les deux variables sont cointégrées, sinon elles ne sont pas cointégrées. Dans le cas présent si les deux variables ne sont pas cointégrées, cela voudrait signifier que notre régression est fallacieuse \footnote{Régression caractérisée par un $R^{2}$ proche de 1 et une $DW$ proche de 0} et qu'il n'existe aucune relation de long-terme entre les deux variables.
+\item Si les deux variables sont cointégrées, il faut estimer un modèle à correction d'erreurs et vérifier que le coefficient correcteur d'erreurs soit bien négatif.
+
+
+
+
+
+
+
+
+
 
 # Conclusion
 
