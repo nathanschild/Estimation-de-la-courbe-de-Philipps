@@ -694,7 +694,7 @@ Les résultats des tests sont formels au seuil de 1\%, les variables une fois qu
 
 ### Test de cointégration
 
-Après avoir testé la stationnairité des variables de l'étude, nous avons constaté qu'il était nécessaire de différencier une fois les variables pour qu'elles soient stationnaires (i.e. elles sont $I(1)$).  
+Après avoir testé la stationnarité des variables de l'étude, nous avons constaté qu'il était nécessaire de différencier une fois les variables pour qu'elles soient stationnaires (i.e. elles sont $I(1)$).  
 Il est aisé de tester une relation de cointégration entre deux variables, pour cela il suffit :
 
 \begin{itemize}
@@ -702,7 +702,7 @@ Il est aisé de tester une relation de cointégration entre deux variables, pour
 \item Ensuite, il faut prendre les résidus de ce modèle
 \item Enfin, il faut mener un test de stationnarité sur les résidus. Si les résidus sont stationnaires, alors les deux variables sont cointégrées, sinon elles ne sont pas cointégrées. Dans le cas présent si les deux variables ne sont pas cointégrées, cela voudrait signifier que notre régression est fallacieuse \footnote{Régression caractérisée par un $R^{2}$ proche de 1 et une $DW$ proche de 0} et qu'il n'existe aucune relation de long-terme entre les deux variables.
 \item Si les deux variables sont cointégrées, il faut estimer un modèle à correction d'erreurs et vérifier que le coefficient correcteur d'erreurs soit bien négatif.
-
+\end{itemize}
 
 
 
