@@ -61,7 +61,7 @@ Cette section a pour but de décrire la méthodologie utilisée dans cette étud
 Il convient dans un premier temps de charger la base de données et d'en montrer les premières lignes.
 
 ```{r,echo=FALSE,results='hide'}
-data <- read_excel("C:/Users/natha/OneDrive/Bureau/M1/Econométrie appliquée II/data.xlsx")
+data <- read_excel("/Users/zoesommer/Documents/GitHub/projet-d-conom-trie/data.xlsx")
 head(data)
 ```
 \vspace{2mm}
@@ -193,8 +193,28 @@ On peut par ailleurs, considérer des graphiques afin d'analyser la relation ent
 
 par(mfrow=c(1,2))
 
+#Graphique de base
 ggplot(dataFR, aes(x = unemp, y = inf)) +
   geom_point(size = 3, color = "steelblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage en France") +
+  theme_minimal() 
+
+#Graphique des MCO (je crois que c ça loess mais pas sur, si tu changes en lm, la France et le UK c vrmt les opposés)
+
+#Chat GPT dit : méthode LOESS (Locally Weighted Scatterplot Smoothing), qui est une méthode non paramétrique permettant de lisser les données tout en s'adaptant aux tendances locales
+ggplot(dataFR, aes(x = unemp, y = inf)) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  labs(title = "Relation inflation-chômage en France",
+       x = "Taux de chômage",
+       y = "Inflation") +
+  theme_minimal() 
+
+#Ca c'est juste moche
+ggplot(dataFR, aes(x = unemp, y = inf)) +
+  geom_line(size = 1.5, color = "steelblue") +  # Modification ici
   geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
   labs(x = "Taux de chômage", 
        y = "Inflation", 
@@ -207,6 +227,21 @@ ggplot(dataUK, aes(x = unemp, y = inf)) +
   labs(x = "Taux de chômage", 
        y = "Inflation", 
        title = "Relation inflation-chômage au Royaume-Uni") +
+  theme_minimal() 
+
+ggplot(dataUK, aes(x = unemp, y = inf)) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  labs(title = "Relation inflation-chômage au Royaume-Uni",
+       x = "Taux de chômage",
+       y = "Inflation") +
+  theme_minimal() 
+
+ggplot(dataUK, aes(x = unemp, y = inf)) +
+  geom_line(size = 1.5, color = "steelblue") +  # Modification ici
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey") +
+  labs(x = "Taux de chômage", 
+       y = "Inflation", 
+       title = "Relation inflation-chômage au Royaume Uni") +
   theme_minimal() 
 
 par(mfrow=c(1,1))
@@ -694,7 +729,7 @@ Les résultats des tests sont formels au seuil de 1\%, les variables une fois qu
 
 ### Test de cointégration
 
-Après avoir testé la stationnairité des variables de l'étude, nous avons constaté qu'il était nécessaire de différencier une fois les variables pour qu'elles soient stationnaires (i.e. elles sont $I(1)$).  
+Après avoir testé la stationnarité des variables de l'étude, nous avons constaté qu'il était nécessaire de différencier une fois les variables pour qu'elles soient stationnaires (i.e. elles sont $I(1)$).  
 Il est aisé de tester une relation de cointégration entre deux variables, pour cela il suffit :
 
 \begin{itemize}
@@ -702,7 +737,7 @@ Il est aisé de tester une relation de cointégration entre deux variables, pour
 \item Ensuite, il faut prendre les résidus de ce modèle
 \item Enfin, il faut mener un test de stationnarité sur les résidus. Si les résidus sont stationnaires, alors les deux variables sont cointégrées, sinon elles ne sont pas cointégrées. Dans le cas présent si les deux variables ne sont pas cointégrées, cela voudrait signifier que notre régression est fallacieuse \footnote{Régression caractérisée par un $R^{2}$ proche de 1 et une $DW$ proche de 0} et qu'il n'existe aucune relation de long-terme entre les deux variables.
 \item Si les deux variables sont cointégrées, il faut estimer un modèle à correction d'erreurs et vérifier que le coefficient correcteur d'erreurs soit bien négatif.
-
+\end{itemize}
 
 
 
