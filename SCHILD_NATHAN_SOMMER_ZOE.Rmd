@@ -767,7 +767,74 @@ Les résultats français au seuil de 5\% semblent plutôt retenir la cointégrat
 
 Néanmoins, les résultats du Royaume-Uni sont moins encourageants. En effet, 3 tests sur 5 suggèrent la non-stationnarité des résidus, ce qui semble encourager l'absence d'une relation de long-terme entre l'inflation et le chômage pour ce pays. 
 
+Ainsi, cette sous-section nous a permis de dégager un résultat important représentant le fait qu'il existe bel et bien une relation de long-terme entre l'inflation et le chômage en France mais qu'une telle relation est réfutable dans le cadre du Royaume-Uni.
 
+
+### Modèle à correction d'erreurs
+
+Dans cette sous-section, nous allons donc estimer un modèle à correction d'erreurs pour la France. Les résultats sont présentés dans la table suivante.
+
+```{r,echo=FALSE,results='hide'}
+dataFR$resFR<- residuals(MCOfr)
+
+
+data_tsFR <- ts(dataFR[, c("inf", "unemp","resFR")], frequency = 1)
+
+MCEFR <- dynlm(diff(inf)~ diff(unemp)+L(resFR,1),data=data_tsFR)
+
+rob_seFR2 <- list(sqrt(diag(vcovHC(MCEFR, type = "HC1"))))
+
+MCEFR <- dynlm(diff(inf)~ diff(unemp)+L(resFR,1),data=data_tsFR)
+
+stargazer(MCEFR,title = "Résultats des estimations pour la France",
+          align = T, type = "latex",
+          no.space = F,se=rob_seFR2)
+
+```
+
+En effet, nous pouvons estimer ce modèle car nous respectons les deux conditions afin de pouvoir estimer un tel modèle :
+\begin{itemize}
+\item Les séries de l'inflation et du chômage sont initialement non stationnaires. Elles ne deviennent que stationnaires lorsqu'on les différencie.
+\item Les séries de l'inflation et du chômage sont cointégrées au niveau français.
+\end{itemize}
+
+Ce type de modèle prend en compte les dynamiques de court-terme et de long-terme, la dynamique de court-terme est représentée par le chômage et l'inflation en différence tandis que celle de long-terme est représentée par la relation de cointégration décalée d'une période. Le coefficient associé aux résidus estimés décalés d'une période de la relation de cointégration se nomme le coefficient correcteur d'erreur. Il faut que celui-ci soit négatif, en effet, si l'inflation en $t-1$ est supérieure à la cible, cela provoquera une baisse de $\Delta \pi_t$ et inversement. 
+
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Modèle à correction d'erreurs (France)}
+  \label{}
+  \begin{tabular}{lcc}
+    \hline
+    \hline
+    & \multicolumn{1}{c}{\textit{Variable dépendante:}} \\
+    \cline{2-2}
+    & \multicolumn{1}{c}{$\Delta \pi_t$} \\
+    \hline
+    $\Delta u_t$ & -0.269$^*$ \\
+                & (0.163) \\
+                & \\
+    $\hat{\epsilon}_{t-1}$ & -0.057$^{**}$ \\
+                & (0.024) \\
+                & \\
+    Constant    & -0.023 \\
+                & (0.036) \\
+                & \\
+    \hline
+    Observations          & \multicolumn{1}{c}{159} \\
+    R$^2$                 & \multicolumn{1}{c}{0.095} \\
+    Adjusted R$^2$        & \multicolumn{1}{c}{0.084} \\
+    Residual Std. Error   & \multicolumn{1}{c}{0.446 (df = 156)} \\
+    F Statistic           & \multicolumn{1}{c}{8.224$^{***}$ (df = 2; 156)} \\
+    \hline
+    \hline
+    \textit{Note:} & \multicolumn{1}{r}{$^*$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+  \end{tabular}
+\end{table}
+
+
+Nous pouvons dès à présent interpréter les résultats du modèle à correction d'erreurs pour la France. Le coefficient associé au chômage différencié est négatif et significatif, celui-ci représente l'impact à court terme du changement du taux de chômage sur le changement du taux d'inflation. Cela suggère l'existence d'une relation négative entre le chômage et l'inflation à court-terme. Le terme associé aux résidus estimés décalés d'une période est négatif et significatif comme prévu. Ce qui indique une correction vers l'équilibre lorsque l'inflation en $t-1$ est supérieure ou inférieure à la cible. Par ailleurs, le modèle 8.4\% des variations de l'inflation en différence. De plus, la statistique de Fisher apparaît statistiquement significative, ce qui suggère un ajustement du modèle correct. 
 
 
 # Conclusion
