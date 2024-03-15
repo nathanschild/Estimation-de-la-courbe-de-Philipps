@@ -8,6 +8,7 @@ output:
     latex_engine: xelatex
 header-includes:
   - \usepackage{float}
+  - \usepackage{natbib}
 ---
 
 ```{r setup, include=FALSE}
@@ -24,6 +25,7 @@ library(astsa)
 library(AER)
 library(readxl)
 library(ggplot2)
+library(RefManageR)
 ```
 
 \noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
@@ -49,7 +51,7 @@ Cette disparité entre les deux économies souligne l'importance des spécificit
 # Introduction
 
 
-La courbe de Phillips, érigée en pilier de la macroéconomie depuis 1958, tire son origine de l'article de l'économiste William Phillips, intitulé "The Relation between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom". Cette théorie établit une relation décroissante entre le taux de croissance des salaires et le chômage, supposant l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU). La découverte de cette relation au Royaume-Uni a suscité l'intérêt d'autres économistes, dont Paul Samuelson et Robert Solow, qui ont ultérieurement lié l'inflation au chômage, présentant une relation négative entre le taux d'inflation et le taux de chômage.
+La courbe de Phillips, érigée en pilier de la macroéconomie depuis 1958, tire son origine de l'article de l'économiste \cite{phillips1958relation}, intitulé "The Relation between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom". Cette théorie établit une relation décroissante entre le taux de croissance des salaires et le chômage, supposant l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU). La découverte de cette relation au Royaume-Uni a suscité l'intérêt d'autres économistes, dont [@Samuelson1960] et Robert Solow, qui ont ultérieurement lié l'inflation au chômage, présentant une relation négative entre le taux d'inflation et le taux de chômage.
 Cependant, la portée de la courbe de Phillips se limitait initialement au court terme. Milton Friedman et Edmund Phelps ont mis en lumière ses lacunes lors du phénomène de Stagflation dans les années 1970, caractérisé par des taux élevés d'inflation et de chômage. Leur contribution a ajouté une dimension anticipative à la courbe de Phillips, désormais connue sous le nom de courbe de Phillips augmentée des anticipations adaptatives.
 La courbe de Phillips demeure cruciale en macroéconomie, symbolisant l'effet d'action de la banque centrale. Cependant, son utilisation par les autorités est limitée au court terme en tant que solution temporaire pour réduire le taux de chômage.
 Dans cette étude comparative entre la France et le Royaume-Uni, deux pays aux similitudes apparentes mais aux différences fondamentales, nous explorons le lien entre la flexibilité du marché du travail et la courbe de Phillips. La rigidité du marché du travail français, comparée à la flexibilité du marché du travail anglais, peut influencer la pente ou la forme de la courbe de Phillips. De plus, ces deux pays, en tant que puissances européennes majeures, sont également des acteurs de premier plan dans la mondialisation. Nous émettons l'hypothèse d'une courbe de Phillips plus prononcée du côté anglais en raison de la plus grande flexibilité de son marché du travail.
@@ -217,17 +219,17 @@ par(mfrow=c(1,1))
 ```
 \vspace{2mm}
 
-Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir. En effet, une tendance plutôt positive à l'air de se dégager du graphique, ce qui pourrait donner une première intuition négative quant à la validité de la courbe de Philipps.
+Graphiquement, il est difficile de constater une telle relation pour les deux pays. Néanmoins, quelques points intéressants sont à noter. En effet, nous constatons tout de même une relation négative au niveau français. Mis à part quelques points aberrants, plus le taux de chômage est fort, plus l'inflation semble faible. Bien évidemment, cela restera à confirmer par le biais des estimations économétriques. Au niveau du Royaume-Uni, cette relation semble plus complexe à établir. En effet, une tendance plutôt positive à l'air de se dégager du graphique, ce qui pourrait donner une première intuition négative quant à la validité de la courbe de Phillips.
 
 
 # Approche économétrique et théorique
 
-Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Philipps à estimer. Par la suite, nous estimerons deux modèles : un modèle de régression simple puis le modèle fondé théoriquement dans la sous-section suivante. Après estimation, nous commenterons les résultats et en dégagerons des implications macroéconomiques fondamentales. Enfin, nous mènerons des tests de stationnarité et de cointégration afin de constater l'existence d'une relation de long-terme entre le chômage et l'inflation pour les deux pays. Finalement, nous verrons le fait que la relation de long-terme est existante pour la France mais pas pour le Royaume-Uni.
+Cette section vise à étayer les modèles estimés ainsi qu'à en donner une interprétation claire et précise. Dans un premier temps, nous fonderons théoriquement l'équation de la courbe de Phillips à estimer. Par la suite, nous estimerons deux modèles : un modèle de régression simple puis le modèle fondé théoriquement dans la sous-section suivante. Après estimation, nous commenterons les résultats et en dégagerons des implications macroéconomiques fondamentales. Enfin, nous mènerons des tests de stationnarité et de cointégration afin de constater l'existence d'une relation de long-terme entre le chômage et l'inflation pour les deux pays. Finalement, nous verrons le fait que la relation de long-terme est existante pour la France mais pas pour le Royaume-Uni.
 
 ## Le modèle théorique
 
-Cette sous-section vise à établir théoriquement l'équation de la courbe de Philipps. 
-Formellement, la courbe de Philipps augmentée des anticipations peut s'écrire de la manière suivante :
+Cette sous-section vise à établir théoriquement l'équation de la courbe de Phillips. 
+Formellement, la courbe de Phillips augmentée des anticipations peut s'écrire de la manière suivante :
 
 \[
 \pi_t = \alpha + \beta u_t + \gamma \pi^{e}_{t} + \epsilon_t
@@ -279,7 +281,7 @@ Finalement, en notant $\theta=1-\lambda$, on trouve que :
 \pi^{e}_{t}=\frac{(1-\theta)\pi_t}{1-\theta L}
 \]
 
-En réinjectant cette équation dans l'équation de la courbe de Philipps, il est aisé de constater que :
+En réinjectant cette équation dans l'équation de la courbe de Phillips, il est aisé de constater que :
 
 \[
 \pi_t = \alpha + \beta u_t + \gamma [\frac{(1-\theta)\pi_t}{1-\theta L}] + \epsilon_t
@@ -356,7 +358,7 @@ stargazer(list(MCOfr, modelfr),
   \end{tabular}
 \end{table}
 
-Les résultats français tendent à confirmer l'existence d'une courbe de Philipps. En effet, dans le premier modèle, le coefficient associé au chômage est négatif et signficatif conformément à l'intuition économique. Par ailleurs, ce modèle simple explique 1.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%. 
+Les résultats français tendent à confirmer l'existence d'une courbe de Phillips. En effet, dans le premier modèle, le coefficient associé au chômage est négatif et signficatif conformément à l'intuition économique. Par ailleurs, ce modèle simple explique 1.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%. 
 
 Il convient désormais d'interpréter les résultats du modèle d'anticipations adaptatives \footnote{Modèle qui découle de la structure de Koyck} présenté précédemment. Une fois de plus, le coefficient au chômage est négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Il est fondamental de noter que ce coefficient est très proche de 1, ce qui peut nous indiquer deux éléments. Premièrement, nous pouvons penser que les anticipations sont statiques \footnote{Cela signifie que les agents économiques ne revoient pas leurs anticipations d'une période à l'autre}. Deuxièmement, le coefficient étant proche de 1, cela signifie que le processus de convergence est très lent. Ce qui signifie que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période n'est pas significatif. Ce modèle explique 94.3\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
@@ -411,7 +413,7 @@ stargazer(list(MCOuk, modeluk),
   \end{tabular}
 \end{table}
 
-Les résultats du Royaume-Uni sont dans un premier temps moins encourageants que les résultats français. En effet, dans le cadre du modèle linéaire simple, le coefficient associé au chômage est certes largement significatif, il est positif. Cela vient confirmer l'intuition graphique mais ce signe positif vient contredire l'intuition économique de la courbe de Philipps présupposant une relation négative entre l'inflation et le chômage.  Par ailleurs, ce modèle simple explique 13.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%.
+Les résultats du Royaume-Uni sont dans un premier temps moins encourageants que les résultats français. En effet, dans le cadre du modèle linéaire simple, le coefficient associé au chômage est certes largement significatif, il est positif. Cela vient confirmer l'intuition graphique mais ce signe positif vient contredire l'intuition économique de la courbe de Phillips présupposant une relation négative entre l'inflation et le chômage.  Par ailleurs, ce modèle simple explique 13.8\% des variations de l'inflation. L'ajustement semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\%.
 
 Nous pouvons dès lors interpréter les résultats obtenus en estimant le modèle d'anticipations adaptatives. Cette fois-ci, les résultats sont très encourageants. En effet, le coefficient associé au chômage non retardé est cette fois-ci négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Ce coefficient est proche de 1, les commentaires sont alors similaires à ceux du modèle précédent. En effet, nous pouvons penser que les anticipations sont statiques. Par ailleurs, cela signifie que le processus de convergence est très lent. Ce qui indique le fait que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période est significatif et positif. Ce modèle explique 91.9\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
@@ -843,6 +845,6 @@ Votre conclusion ici.
 
 # Bibliographie
 
-
-
+\bibliography{references.bib}
+\nocite{*}
 
