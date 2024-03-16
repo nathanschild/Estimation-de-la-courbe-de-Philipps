@@ -9,6 +9,51 @@ output:
 header-includes:
   - \usepackage{float}
   - \usepackage{natbib}
+references:
+- id: phillips1958relation
+  title: "The relation between unemployment and the rate of change of money wage rates in the United Kingdom, 1861-1957"
+  author:
+  - family: Phillips
+    given: Alban W
+  journal: economica
+  volume: 25
+  number: 100
+  pages: 283-299
+  year: 1958
+  publisher: JSTOR
+  type: article-journal
+- id: samuelson1960analytical
+  title: "Analytical aspects of anti-inflation policy"
+  author:
+  - family: Samuelson
+    given: Paul A
+  - family: Solow
+    given: Robert M
+  journal: The American Economic Review
+  volume: 50
+  number: 2
+  pages: 177-194
+  year: 1960
+  publisher: JSTOR
+  type: article-journal
+- id: friedman1995role
+  title: "The role of monetary policy"
+  author:
+  - family: Friedman
+    given: Milton
+  year: 1995
+  publisher: Springer
+  type: book
+- id: phelps1967phillips
+  title: "Phillips curves, expectations of inflation and optimal unemployment over time"
+  author:
+  - family: Phelps
+    given: Edmund S
+  journal: Economica
+  pages: 254-281
+  year: 1967
+  publisher: JSTOR
+  type: article-journal
 ---
 
 ```{r setup, include=FALSE}
@@ -51,8 +96,8 @@ Cette disparité entre les deux économies souligne l'importance des spécificit
 # Introduction
 
 
-La courbe de Phillips, érigée en pilier de la macroéconomie depuis 1958, tire son origine de l'article de l'économiste \cite{phillips1958relation}, intitulé "The Relation between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom". Cette théorie établit une relation décroissante entre le taux de croissance des salaires et le chômage, supposant l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU). La découverte de cette relation au Royaume-Uni a suscité l'intérêt d'autres économistes, dont [@Samuelson1960] et Robert Solow, qui ont ultérieurement lié l'inflation au chômage, présentant une relation négative entre le taux d'inflation et le taux de chômage.
-Cependant, la portée de la courbe de Phillips se limitait initialement au court terme. Milton Friedman et Edmund Phelps ont mis en lumière ses lacunes lors du phénomène de Stagflation dans les années 1970, caractérisé par des taux élevés d'inflation et de chômage. Leur contribution a ajouté une dimension anticipative à la courbe de Phillips, désormais connue sous le nom de courbe de Phillips augmentée des anticipations adaptatives.
+La courbe de Phillips, érigée en pilier de la macroéconomie depuis 1958, tire son origine de l'article de l'économiste [@phillips1958relation], intitulé "The Relation between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom". Cette théorie établit une relation décroissante entre le taux de croissance des salaires et le chômage, supposant l'existence d'un taux de chômage n'accélérant pas la croissance des salaires (NAWRU). La découverte de cette relation au Royaume-Uni a suscité l'intérêt d'autres économistes, dont [@samuelson1960analytical], qui ont ultérieurement lié l'inflation au chômage, présentant une relation négative entre le taux d'inflation et le taux de chômage.
+Cependant, la portée de la courbe de Phillips se limitait initialement au court terme. [@friedman1995role] et [@phelps1967phillips] ont mis en lumière ses lacunes lors du phénomène de stagflation dans les années 1970, caractérisé par des taux élevés d'inflation et de chômage. Leur contribution a ajouté une dimension anticipative à la courbe de Phillips, désormais connue sous le nom de courbe de Phillips augmentée des anticipations adaptatives.
 La courbe de Phillips demeure cruciale en macroéconomie, symbolisant l'effet d'action de la banque centrale. Cependant, son utilisation par les autorités est limitée au court terme en tant que solution temporaire pour réduire le taux de chômage.
 Dans cette étude comparative entre la France et le Royaume-Uni, deux pays aux similitudes apparentes mais aux différences fondamentales, nous explorons le lien entre la flexibilité du marché du travail et la courbe de Phillips. La rigidité du marché du travail français, comparée à la flexibilité du marché du travail anglais, peut influencer la pente ou la forme de la courbe de Phillips. De plus, ces deux pays, en tant que puissances européennes majeures, sont également des acteurs de premier plan dans la mondialisation. Nous émettons l'hypothèse d'une courbe de Phillips plus prononcée du côté anglais en raison de la plus grande flexibilité de son marché du travail.
 En tenant compte des nouvelles technologies et des politiques d'inflation actuelles qui semblent aplatir la courbe de Phillips, nos hypothèses incluent l'absence de relation ou, du moins, la faiblesse de cette courbe. Nous chercherons d'abord à vérifier la validité de la courbe de Phillips à long terme, puis à évaluer la magnitude de cette relation. Ces résultats nous permettront de tirer des conclusions sur la capacité des pays à utiliser cette relation dans l'orientation de leur politique monétaire.
@@ -845,6 +890,5 @@ Votre conclusion ici.
 
 # Bibliographie
 
-\bibliography{references.bib}
-\nocite{*}
+
 
