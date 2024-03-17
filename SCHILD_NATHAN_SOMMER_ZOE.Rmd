@@ -117,7 +117,7 @@ head(data)
 ```
 \vspace{2mm}
 
-Nous considérons donc deux variables principales dans le cadre de notre étude, le chômage qui sera la variable dépendante et l'inflation qui représentera la variable indépendante.
+Nous considérons donc deux variables principales dans le cadre de notre étude, le chômage qui sera la variable indépendante et l'inflation qui représentera la variable dépendante.
 
 \vspace{2mm}
 
@@ -460,7 +460,7 @@ Les résultats du Royaume-Uni sont dans un premier temps moins encourageants que
 
 Nous pouvons dès lors interpréter les résultats obtenus en estimant le modèle d'anticipations adaptatives. Cette fois-ci, les résultats sont très encourageants. En effet, le coefficient associé au chômage non retardé est cette fois-ci négatif et largement significatif. De plus, le coefficient associé à l'inflation retardée d'une période est positif et largement significatif. Ce coefficient est proche de 1, les commentaires sont alors similaires à ceux du modèle précédent. En effet, nous pouvons penser que les anticipations sont statiques. Par ailleurs, cela signifie que le processus de convergence est très lent. Ce qui indique le fait que les agents ne vont pas dans le sens de la Banque Centrale et que les annonces de celles-ci ne sont en aucun cas crédibles. Enfin, le coefficient associé au chômage retardé d'une période est significatif et positif. Ce modèle explique 91.9\% des variations de l'inflation, ce qui constitue une grande augmentation par rapport au modèle linéaire simple. L'ajustement du modèle semble correct avec une statistique de Fisher significative au seuil de 10\%, 5\% et 1\% comme le précédent.
 
-Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au sein des deux pays même si les résultats sont plus encourageants dans le cadre du Royaume-Uni. La principale différence entre les deux pays réside dans la significativité du coefficient associé au chômage retardé d'une période. En effet, celui-ci est significatif pour le Royaume-Uni mais pas pour la France.
+Ainsi, les résultats semblent confirmer l'existence d'une courbe de Philipps au sein des deux pays même si les résultats sont plus encourageants dans le cadre du Royaume-Uni. La principale différence entre les deux pays réside dans la significativité du coefficient associé au chômage retardé d'une période. En effet, celui-ci est significatif pour le Royaume-Uni mais pas pour la France. Il convient de noter l'absence de toute confiance des agents économiques envers la Banque Centrale et le processus de convergence très lent dans les deux cas.
 
 ### Tests de stationnarité
 
