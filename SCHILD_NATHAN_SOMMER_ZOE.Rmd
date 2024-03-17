@@ -819,7 +819,28 @@ Ainsi, cette sous-section nous a permis de dégager un résultat important repr�
 
 ### Modèle à correction d'erreurs
 
-Dans cette sous-section, nous allons donc estimer un modèle à correction d'erreurs pour la France. Les résultats sont présentés dans la table suivante.
+Dans cette sous-section, nous allons donc estimer un modèle à correction d'erreurs pour la France.
+Un tel modèle s'obtient à partir du modèle à retards échelonnés présentés dans la section précédentes tel que : 
+\[
+\pi_t = \alpha^{*} + \theta \pi_{t-1} + \beta u_t + \delta u_{t-1} + \epsilon_t ^{*}
+\]
+On vient y soustraire $\pi_{t-1}$ des deux cotés de l'équation ainsi qu'ajouter et enlever $\beta u_{t-1}$. Ceci nous donne :
+\[
+\pi_t-\pi_{t-1} = \alpha^{*} + \theta \pi_{t-1}-\pi_{t-1} + \beta u_t +\beta u_{t-1}-\beta u_{t-1} \delta u_{t-1} + \epsilon_t ^{*}
+\]
+En factorisant, on obtient : 
+\[
+\triangle \pi_t = \alpha^{*} + (\theta-1) \pi_{t-1} + \beta \triangle u_t + (\delta+\beta) u_{t-1} + \epsilon_t ^{*}
+\]
+Enfin on obtient notre modèle à correction d'erreurs : 
+\[
+\triangle \pi_t = \alpha^{*}  + \beta \triangle u_t +(\theta-1) [\pi_{t-1} - (\frac {\delta+\beta}{1-\theta}) u_{t-1} + \epsilon_t ^{*}
+\]
+
+avec $\alpha^{*}=\alpha(1-\theta)$ , $\epsilon_t ^{*}= \epsilon_t(1-\theta L)= \epsilon_t -\theta \epsilon_{t-1}$.
+Le terme d'erreur est $(\theta-1)$, la variation de court terme est observée par $\beta \triangle u_t$ et celle de long terme par le terme entre crochet. 
+
+Les résultats sont présentés dans la table suivante.
 
 ```{r,echo=FALSE,results='hide'}
 dataFR$resFR<- residuals(MCOfr)
@@ -886,7 +907,17 @@ Nous pouvons dès à présent interpréter les résultats du modèle à correcti
 
 # Conclusion
 
-Votre conclusion ici.
+Nous pouvons à présent conclure sur notre étude empirique de la validité de la courbe de Phillips en France et au Royaume Unis.
+Concernant la France, nos estimations reflètent une courbe de Phillips robuste. Ceci nous a ammené à établir un modèle à correction d'erreur au vu de la présence de cointégration entre nos variables de chômage et d'inflation. 
+Néanmoins, au Royaume-Uni, nos estimations ne nous ont pas permises de conclure à une relation de long terme entre chômage et inflation. Ceci notamment au vu de l'absence de cointégration entre nos variables macroéconomiques. 
+
+La disparité entre les économies souligne l'importance des spécificités nationales dans la validation de la courbe de Phillips. Ces divergences invitent à une approche nuancée dans les politiques économiques, en adaptant les stratégies aux réalités de chaque pays. Ainsi, cette étude préconise une prise de décision éclairée, tenant compte des nuances nationales pour mieux comprendre et gérer les mécanismes économiques.
+
+Concernant les limites de notre étude, il y aurait tout d'abord un nombre d'observation à rallonger pour permettre une meilleure estimation. Quant aux problèmes d'endogénéité, il serait possible de mettre en place un modèle avec des variables instrumentales, comme par exemple prendre en compte les caractéristiques individuelles à chaque pays ou encore une variable plus macroéconomique telle que le taux de croissance monétaire. 
+
+La courbe de Phillips offre la possibilité d'aborder beaucoup d'autres modèles mettant en lien chômge et inflation. L'économiste R.Lucas qui théorisa les anticipations rationnelles, remettant totalement en question l'implication des politiques se basant sur la courbe de Phillips. En effet, d'après R.Lucas, les anticipations des agents sont parfaites annulant ainsi les décisions prises à partir de la courbe de Phillips pour moduler le chômage ou l'inflation. Dans une vision néo-classique, il faudrait alors prendre en compte ces anticipations rationnelles dans l'élaboration d'une courbe de Phillips. Ce modèle néo-classique de la courbe de Phillips illustrerait l'idée que les ajustements à court terme sur le marché du travail peuvent temporairement affecter l'inflation, mais que ces effets disparaisseraient à mesure que les salaires et les prix s'ajustent à long terme, revenant finalement à un niveau déterminé par des facteurs structurels.
+
+
 
 # Bibliographie
 
