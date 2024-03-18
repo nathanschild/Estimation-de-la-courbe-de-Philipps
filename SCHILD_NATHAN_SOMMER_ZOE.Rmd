@@ -342,7 +342,7 @@ Voici l'équation économétrique fondamentale que nous allons estimer dans ce t
 
 Par ailleurs, le coefficient $\theta$ est très important dans notre contexte. Si $\theta=1$, l'ajustement est très lent et les anticipations pourront être considérées comme étant statiques. Une telle valeur représentera également le fait que les agents ne font pas confiance à la Banque centrale et les annonces de celles-ci ne sont pas crédibles. Dans l'autre cas où $\theta=0$, le processus d'ajustement sera très rapide et les anticipations pourront être considérées comme naïves. Dans ce cas, les agents ont une totale confiance en la Banque centrale et les annonces de celles-ci seront crédibles aux yeux des agents.
 
-Par la suite, après avoir estimé les deux modèles, respectivement pour la France et pour le Royaume-Uni, nous mènerons des tests afin de savoir si les séries sont stationnaires ou non. Nous utiliserons plus particulièrement la méthode de Engle-Granger en deux étapes qui consiste à tout d'abord faire des tests de stationnarité puis un test de cointégration. Ensuite, si les variables sont cointégrées, il faudra adopter un modèle à correction d'erreurs qui combine le court-terme et le long-terme. En effet, si les deux variables ne sont pas cointégrées et qu'une régression simple présente un $R^{2}$ proche de 1 et une $DW$ proche de 0, la régression pourra être considérée comme falacieuse.
+Par la suite, après avoir estimé les deux modèles, respectivement pour la France et pour le Royaume-Uni, nous mènerons des tests afin de savoir si les séries sont stationnaires ou non. Nous utiliserons plus particulièrement la méthode de Engle-Granger en deux étapes qui consiste à tout d'abord faire des tests de stationnarité puis un test de cointégration. Ensuite, si les variables sont cointégrées, il faudra adopter un modèle à correction d'erreurs qui combine le court-terme et le long-terme. En effet, si les deux variables ne sont pas cointégrées et qu'une régression simple présente un $R^{2}$ proche de 1 et une $DW$ proche de 0, la régression pourra être considérée comme fallacieuse.
 
 
 ## Résultats des estimations
@@ -824,7 +824,7 @@ Un tel modèle s'obtient à partir du modèle à retards échelonnés présenté
 \]
 On vient y soustraire $\pi_{t-1}$ des deux cotés de l'équation ainsi qu'ajouter et enlever $\beta u_{t-1}$. Ceci nous donne :
 \[
-\pi_t-\pi_{t-1} = \alpha^{*} + \theta \pi_{t-1}-\pi_{t-1} + \beta u_t +\beta u_{t-1}-\beta u_{t-1} \delta u_{t-1} + \epsilon_t ^{*}
+\pi_t-\pi_{t-1} = \alpha^{*} + \theta \pi_{t-1}-\pi_{t-1} + \beta u_t +\beta u_{t-1}-\beta u_{t-1} + \delta u_{t-1} + \epsilon_t ^{*}
 \]
 En factorisant, on obtient : 
 \[
@@ -836,7 +836,7 @@ Enfin on obtient notre modèle à correction d'erreurs :
 \]
 
 avec $\alpha^{*}=\alpha(1-\theta)$ , $\epsilon_t ^{*}= \epsilon_t(1-\theta L)= \epsilon_t -\theta \epsilon_{t-1}$.
-La variation de court terme est observée par $\beta \Delta u_t$ et $\Delta \pi_t$ et celle de long terme par le terme entre crochets. 
+La variation de court terme est observée par $\beta \Delta u_t$ et $\Delta \pi_t$ et celle de long terme par le terme entre crochets. $\theta -1$ est le terme correcteur d'erreur, il est attendu négatif.
 
 Les résultats sont présentés dans la table suivante.
 
